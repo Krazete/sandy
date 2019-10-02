@@ -147,15 +147,22 @@ function shuffleBoard() {
     updateBoard();
 }
 
-// function print(a) {
-//     for (var j = 0; j < 4; j++) {
-//         console.log(a.slice(9 * j, 9 * (j + 1)).join("\t"), j);
-//     }
-// }
-
 function init() {
     board = document.getElementById("board");
     initTiles();
+    test();
 }
 
 window.addEventListener("DOMContentLoaded", init);
+
+function test() {
+    for (var i = 1; i < 8; i++) {
+        empty[i] = true;
+    }
+    for (var i = 0; i < 3; i++) {
+        empty[4 + i * 9] = true;
+    }
+    match(7 + 9 * 1, 4 + 9 * 3);
+    shuffleBoard();
+    updateBoard();
+}

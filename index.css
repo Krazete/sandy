@@ -23,21 +23,43 @@ body {
 
 #board {
     position: relative;
-    width: 100vmin;
+    width: min-content;
     display: grid;
-    grid-template-columns: repeat(9, 5vw);
-    grid-gap: 0.5vw;
+    grid-template-columns: repeat(9, auto);
     margin: auto;
 }
 
 .card {
     position: relative;
-    margin: auto;
+    width: 9vw;
+    max-width: 16vh;
+    height: 9vw;
+    max-height: 16vh;
+}
+
+@media (orientation: portrait) {
+    #board {
+        grid-auto-flow: column;
+        grid-template-rows: repeat(9, auto);
+        direction: rtl;
+    }
+    .card {
+        position: relative;
+        width: 9vh;
+        max-width: 16vw;
+        height: 9vh;
+        max-height: 16vw;
+    }
 }
 
 .card img {
-    position: relative;
+    position: absolute;
     width: 90%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
 }
 
 .card:hover:after {
@@ -47,8 +69,13 @@ body {
     background-repeat: no-repeat;
     display: block;
     width: 100%;
-    height: 125%;
-    top: -6%;
-    left: -6%;
+    height: 100%;
+    position: relative;
+}
+
+#linelayer {
     position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 5px #fec75c);
 }
