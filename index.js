@@ -1,24 +1,40 @@
 var board;
-var cards = [];
-
-var tiles = [];
 var empty = [];
+var tiles = [];
+var selected;
 
-function newCard(n) {
-    var div = document.createElement("div");
-    div.className = "card";
-    var card = document.createElement("img");
-    card.src = "tile/" + n + ".png";
-    div.appendChild(card);
-    return div;
+function newTile(n) {
+    var tile = document.createElement("div");
+    tile.className = "tile";
+    var icon = document.createElement("img");
+    icon.src = "tile/" + n + ".png";
+    tile.appendChild(icon);
+    return tile;
 }
 
 function initTiles() {
     for (var k = 0; k < 36; k++) {
-        tiles.push(k);
         empty.push(false);
+        tiles.push({
+            "id": k,
+            "element": newTile(k % 18 + 1)
+        });
+    }
+}
 
-        cards.push(newCard(k % 18 + 1));
+function shuffle() {
+    var ks = []
+    for (var k = 0; k < 36; k++) {
+        if (!empty[k]) {
+            ks.push(k);
+        }
+    }
+    for (var l = ks.length - 1; l > 0; l--) {
+        var m = ks[l];
+        var n = ks[Math.floor(Math.random() * (l + 1))];
+        var tilesm = tiles[m];
+        tiles[m] = tiles[n];
+        tiles[n] = tilesm;
     }
 }
 
@@ -110,45 +126,55 @@ function match(p, q) {
 function updateBoard() {
     board.innerHTML = "";
     for (var k = 0; k < 36; k++) {
-        var card = cards[tiles[k]];
-        board.appendChild(card);
+        var tile = tiles[k];
+        board.appendChild(tile.element);
         if (empty[k]) {
-            card.style.opacity = "0";
+            tile.element.classList.add("hidden");
         }
         else {
-            card.style = "";
+            tile.element.classList.remove("hidden");
         }
     }
 }
 
-// function shuffle(a) {
-//     for (var i = a.length - 1; i > 0; i--) {
-//         var j = Math.floor(Math.random() * (i + 1));
-//         var ai = a[i];
-//         a[i] = a[j];
-//         a[j] = ai;
-//     }
-// }
+var linelayer;
 
-function shuffleBoard() {
-    var ks = [];
-    for (var k = 0; k < 36; k++) {
-        if (!empty[k]) {
-            ks.push(k);
+function layline() {
+    for (var polyline of linelayer.children) {
+        polyline.setAttribute("points", "50,300 500,300 500,50 900,50");
+    }
+}
+
+function select(tile) {
+    if (tile.classList.contains("tile")) {
+        if (selected) {
+            if (selected == tile) {
+                tile.classList.remove("selected");
+            }
+            else {
+                tile.classList.add("selected");
+                match(selected, tile);
+            }
+            selected = undefined;
+        }
+        else {
+            tile.classList.add("selected");
+            selected = tile;
         }
     }
-    for (var l = ks.length - 1; l > 0; l--) {
-        var m = ks[l];
-        var n = ks[Math.floor(Math.random() * (l + 1))];
-        var tilesm = tiles[m];
-        tiles[m] = tiles[n];
-        tiles[n] = tilesm;
+    else if (tile.id != "board") {
+        select(tile.parentElement);
     }
-    updateBoard();
+}
+
+function onBoardClick(e) {
+    select(e.target);
 }
 
 function init() {
+    linelayer = document.getElementById("linelayer");
     board = document.getElementById("board");
+    board.addEventListener("click", onBoardClick);
     initTiles();
     test();
 }
@@ -163,6 +189,6 @@ function test() {
         empty[4 + i * 9] = true;
     }
     match(7 + 9 * 1, 4 + 9 * 3);
-    shuffleBoard();
+    shuffle();
     updateBoard();
 }
