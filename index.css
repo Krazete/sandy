@@ -73,7 +73,7 @@ body {
     /* clip: rect(0, 14.4vh, 14.4vh, 0); */
 }
 
-.tile.selected, .tile:hover:after {
+.tile.selected:after {
     content: "";
     background: url(img/selected.png);
     background-size: contain;

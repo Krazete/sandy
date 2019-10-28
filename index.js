@@ -145,6 +145,10 @@ function layline() {
     }
 }
 
+function animateMatch() {
+    match(selected, tile);
+}
+
 function select(tile) {
     if (tile.classList.contains("tile")) {
         if (selected) {
@@ -153,7 +157,7 @@ function select(tile) {
             }
             else {
                 tile.classList.add("selected");
-                match(selected, tile);
+                animateMatch(selected, tile);
             }
             selected = undefined;
         }
