@@ -34,6 +34,7 @@ body {
     display: grid;
     grid-template-columns: repeat(9, auto);
     margin: auto;
+    user-select: none;
 }
 
 .tile {
@@ -73,7 +74,7 @@ body {
     /* clip: rect(0, 14.4vh, 14.4vh, 0); */
 }
 
-.tile.selected:after {
+.tile:hover:after, .tile.selected:after {
     content: "";
     background: url(img/selected.png);
     background-size: contain;
@@ -81,7 +82,12 @@ body {
     display: block;
     width: 100%;
     height: 100%;
+    opacity: 0.5;
     position: relative;
+}
+
+.tile.selected:after {
+    opacity: 1;
 }
 
 #linelayer {
