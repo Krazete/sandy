@@ -103,7 +103,6 @@ function solve(p, q) {
     var qd = getDomain(qx, qy);
     var domain = [Math.max(pd[0], qd[0]), Math.min(pd[1], qd[1])];
     for (var i = domain[0]; i <= domain[1]; i++) {
-        var interrupted = false;
         for (var j = Math.min(py, qy) + 1; j < Math.max(py, qy); j++) {
             var k = i + 9 * j;
             if (!(i < 0 || i > 8 || j < 0 || j > 3 || empty[k])) {
@@ -118,7 +117,6 @@ function solve(p, q) {
     var qr = getRange(qx, qy);
     var range = [Math.max(pr[0], qr[0]), Math.min(pr[1], qr[1])];
     for (var j = range[0]; j <= range[1]; j++) {
-        var interrupted = false;
         for (var i = Math.min(px, qx) + 1; i < Math.max(px, qx); i++) {
             var k = i + 9 * j;
             if (!(i < 0 || i > 8 || j < 0 || j > 3 || empty[k])) {
@@ -185,7 +183,7 @@ function select(tile) {
     }
     var id = parseInt(tile.id);
     if (tile.classList.contains("tile")) {
-        if (selected) {
+        if (typeof selected != "undefined") {
             if (match(selected, id)) {
                 tile.classList.add("selected");
                 animateMatch(selected, id); // maybe put in match()
