@@ -177,6 +177,15 @@ function layline(points) {
 function animateMatch(p, q) {
     tiles[p].classList.add("matched");
     tiles[q].classList.add("matched");
+    // setTimeout(updateBoard, 1000);
+}
+
+function weight(points) {
+    var a = points[0];
+    var b = points[1];
+    var c = points[2];
+    var d = points[3];
+    var length = Math.abs
 }
 
 function match(selected, id) {
