@@ -1,6 +1,7 @@
 /* Elements */
 
 var board;
+var shuffle;
 var tiles = [];
 
 /* Data */
@@ -8,6 +9,8 @@ var tiles = [];
 var empty = [];
 var ids = [];
 var selected;
+
+/* Initialize */
 
 function newTile(n) {
     var tile = document.createElement("div");
@@ -27,22 +30,6 @@ function initTiles() {
     }
 }
 
-function shuffle() {
-    var ks = []
-    for (var k = 0; k < 36; k++) {
-        if (!empty[k]) {
-            ks.push(k);
-        }
-    }
-    for (var l = ks.length - 1; l > 0; l--) {
-        var m = ks[l];
-        var n = ks[Math.floor(Math.random() * (l + 1))];
-        var idsm = ids[m];
-        ids[m] = ids[n];
-        ids[n] = idsm;
-    }
-}
-
 function updateBoard() {
     board.innerHTML = "";
     for (var k = 0; k < 36; k++) {
@@ -56,6 +43,37 @@ function updateBoard() {
         }
     }
 }
+
+/* Shuffle */
+
+function disableShuffle() {
+    shuffle.classList.add("disabled");
+}
+
+function enableShuffle() {
+    shuffle.classList.remove("disabled");
+}
+
+function shuffleTiles() {
+    var ks = []
+    for (var k = 0; k < 36; k++) {
+        if (!empty[k]) {
+            ks.push(k);
+        }
+    }
+    for (var l = ks.length - 1; l > 0; l--) {
+        var m = ks[l];
+        var n = ks[Math.floor(Math.random() * (l + 1))];
+        var idsm = ids[m];
+        ids[m] = ids[n];
+        ids[n] = idsm;
+    }
+    updateBoard();
+    disableShuffle();
+    setTimeout(enableShuffle, 3000);
+}
+
+/* Pathfinding */
 
 function getDomain(x, y) {
     var domain = [-1, 9];
@@ -136,6 +154,39 @@ function solve(p, q) {
     return solutions;
 }
 
+function distance(a, b) {
+    return Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
+}
+
+function length(points) {
+    var a = distance(points[0], points[1]);
+    var b = distance(points[1], points[2]);
+    var c = distance(points[2], points[3]);
+    if (a == 0 || b == 0 || c == 0) {
+        return 0;
+    }
+    return a + b + c;
+}
+
+function byLength(a, b) {
+    return length(a) - length(b);
+}
+
+function trim(points) {
+    var sorted = points.slice(0).sort(byLength);
+    var len = length(sorted[0]);
+    for (var i = sorted.length - 1; i >= 0; i--) {
+        if (length(sorted[i]) > len) {
+            sorted.pop();
+        }
+        else {
+            break;
+        }
+    }
+    console.log(points, sorted);
+    return sorted;
+}
+
 var linelayer;
 
 function hideLines() {
@@ -194,7 +245,8 @@ function match(selected, id) {
         var q = ids.indexOf(id);
         var solutions = solve(p, q);
         if (solutions.length) {
-            var solution = solutions[Math.floor(solutions.length / 2)];
+            var trimmed = trim(solutions);
+            var solution = trimmed[Math.floor(Math.random() * trimmed.length)];
             layline(solution);
             return true;
         }
@@ -232,10 +284,13 @@ function select(tile) {
 function init() {
     linelayer = document.getElementById("linelayer");
     board = document.getElementById("board");
+    shuffle = document.getElementById("shuffle");
+
     board.addEventListener("click", select);
+    shuffle.addEventListener("click", shuffleTiles);
+
     initTiles();
-    shuffle();
-    updateBoard();
+    shuffleTiles();
 }
 
 window.addEventListener("DOMContentLoaded", init);

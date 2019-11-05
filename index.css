@@ -15,6 +15,11 @@ body {
     visibility: hidden;
 }
 
+.disabled {
+    filter: brightness(0.5);
+    user-select: none;
+}
+
 #container {
     position: relative;
     top: 50%;
@@ -27,6 +32,14 @@ body {
 /* #banner {
     display: block;
 } */
+
+#topbar {
+    height: 10vh;
+}
+
+#topbar img {
+    height: 10vh;
+}
 
 #board {
     background: #ffffff80;
