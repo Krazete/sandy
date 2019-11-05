@@ -138,25 +138,45 @@ function solve(p, q) {
 
 var linelayer;
 
-// function getCentroid(tile) {
-//     var box = tile.getBoundingClientRect();
-//     return [(box.left + box.right) / 2, (box.top + box.bottom) / 2];
-// }
+function hideLines() {
+    linelayer.classList.add("hidden");
+}
 
-// function layline(ks) {
-//     for (var polyline of linelayer.children) {
-//         console.log(ks);
-//         polyline.setAttribute("points", [
-//             getCentroid(tiles[ks[0]]),
-//             getCentroid(tiles[ks[1]]),
-//             getCentroid(tiles[ks[2]]),
-//             getCentroid(tiles[ks[3]])
-//         ].join(" "));
-//     }
-// }
+function layline(points) {
+    var box = board.getBoundingClientRect();
+    if (box.width > box.height) {
+        var size = box.width / 9;
+        var x = box.left + size / 2;
+        var y = box.top + size / 2;
+        for (var polyline of linelayer.children) {
+            polyline.setAttribute("points", [
+                (x + points[0][0] * size) + "," + (y + points[0][1] * size),
+                (x + points[1][0] * size) + "," + (y + points[1][1] * size),
+                (x + points[2][0] * size) + "," + (y + points[2][1] * size),
+                (x + points[3][0] * size) + "," + (y + points[3][1] * size)
+            ].join(" "));
+        }
+    }
+    else {
+        var size = box.height / 9;
+        var x = box.right - size / 2;
+        var y = box.top + size / 2;
+        for (var polyline of linelayer.children) {
+            polyline.setAttribute("points", [
+                (x - points[0][1] * size) + "," + (y + points[0][0] * size),
+                (x - points[1][1] * size) + "," + (y + points[1][0] * size),
+                (x - points[2][1] * size) + "," + (y + points[2][0] * size),
+                (x - points[3][1] * size) + "," + (y + points[3][0] * size)
+            ].join(" "));
+        }
+    }
+    linelayer.classList.remove("hidden");
+    setTimeout(hideLines, 250);
+}
 
 function animateMatch(p, q) {
-    updateBoard();
+    tiles[p].classList.add("matched");
+    tiles[q].classList.add("matched");
 }
 
 function match(selected, id) {
@@ -165,11 +185,8 @@ function match(selected, id) {
         var q = ids.indexOf(id);
         var solutions = solve(p, q);
         if (solutions.length) {
-            // var solution = solutions[Math.floor(Math.random() * solutions.length)];
-            for (var i = 0; i < solutions.length; i++) {
-                var solution = solutions[i];
-                console.log(solution);
-            }
+            var solution = solutions[Math.floor(solutions.length / 2)];
+            layline(solution);
             return true;
         }
         return false;
