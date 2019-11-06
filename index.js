@@ -1,41 +1,41 @@
 /* Elements */
 
-var board;
 var shuffle;
+var board;
 var tiles = [];
+var pathmap;
 
 /* Data */
 
 var empty = [];
 var ids = [];
-var selected;
+var pid;
 
-/* Initialize */
+/* Initialize Board */
 
-function newTile(n) {
+function newTile(id) {
     var tile = document.createElement("div");
-    tile.id = n;
-    tile.className = "tile";
     var icon = document.createElement("img");
-    icon.src = "tile/" + (n % 18 + 1) + ".png";
+    tile.id = id;
+    tile.className = "tile";
+    icon.src = "tile/" + (id % 18 + 1) + ".png";
     tile.appendChild(icon);
     return tile;
 }
 
 function initTiles() {
-    for (var k = 0; k < 36; k++) {
+    for (var id = 0; id < 36; id++) {
         empty.push(false);
-        ids.push(k);
-        tiles.push(newTile(k));
+        ids.push(id);
+        tiles.push(newTile(id));
     }
 }
 
 function updateBoard() {
-    board.innerHTML = "";
-    for (var k = 0; k < 36; k++) {
-        var tile = tiles[ids[k]];
+    for (var i = 0; i < 36; i++) {
+        var tile = tiles[ids[i]];
         board.appendChild(tile);
-        if (empty[k]) {
+        if (empty[i]) {
             tile.classList.add("hidden");
         }
         else {
@@ -55,25 +55,25 @@ function enableShuffle() {
 }
 
 function shuffleTiles() {
-    var ks = []
-    for (var k = 0; k < 36; k++) {
-        if (!empty[k]) {
-            ks.push(k);
+    var nonempty = []
+    for (var i = 0; i < 36; i++) {
+        if (!empty[i]) {
+            nonempty.push(i);
         }
     }
-    for (var l = ks.length - 1; l > 0; l--) {
-        var m = ks[l];
-        var n = ks[Math.floor(Math.random() * (l + 1))];
-        var idsm = ids[m];
-        ids[m] = ids[n];
-        ids[n] = idsm;
+    for (var i = nonempty.length - 1; i > 0; i--) {
+        var a = nonempty[i];
+        var b = nonempty[Math.floor(Math.random() * (i + 1))];
+        var idsa = ids[a];
+        ids[a] = ids[b];
+        ids[b] = idsa;
     }
     updateBoard();
     disableShuffle();
     setTimeout(enableShuffle, 3000);
 }
 
-/* Pathfinding */
+/* Path Finding */
 
 function getDomain(x, y) {
     var domain = [-1, 9];
@@ -109,8 +109,8 @@ function getRange(x, y) {
     return range;
 }
 
-function solve(p, q) {
-    var solutions = [];
+function findPaths(p, q) {
+    var paths = [];
 
     var px = p % 9;
     var py = Math.floor(p / 9);
@@ -120,6 +120,11 @@ function solve(p, q) {
     var pd = getDomain(px, py);
     var qd = getDomain(qx, qy);
     var domain = [Math.max(pd[0], qd[0]), Math.min(pd[1], qd[1])];
+
+    var pr = getRange(px, py);
+    var qr = getRange(qx, qy);
+    var range = [Math.max(pr[0], qr[0]), Math.min(pr[1], qr[1])];
+
     for (var i = domain[0]; i <= domain[1]; i++) {
         for (var j = Math.min(py, qy) + 1; j < Math.max(py, qy); j++) {
             var k = i + 9 * j;
@@ -128,12 +133,9 @@ function solve(p, q) {
             }
         }
         if (j == py || j == qy) {
-            solutions.push([[px, py], [i, py], [i, qy], [qx, qy]]);
+            paths.push([[px, py], [i, py], [i, qy], [qx, qy]]);
         }
     }
-    var pr = getRange(px, py);
-    var qr = getRange(qx, qy);
-    var range = [Math.max(pr[0], qr[0]), Math.min(pr[1], qr[1])];
     for (var j = range[0]; j <= range[1]; j++) {
         for (var i = Math.min(px, qx) + 1; i < Math.max(px, qx); i++) {
             var k = i + 9 * j;
@@ -142,69 +144,72 @@ function solve(p, q) {
             }
         }
         if (i == px || i == qx) {
-            solutions.push([[px, py], [px, j], [qx, j], [qx, qy]]);
+            paths.push([[px, py], [px, j], [qx, j], [qx, qy]]);
         }
     }
-
-    if (solutions.length) {
+    if (paths.length) {
         empty[p] = true;
         empty[q] = true;
     }
-
-    return solutions;
+    return paths;
 }
 
-function distance(a, b) {
-    return Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
+/* Path Trimming */
+
+function lineLength(p, q) {
+    /* p and q form a non-diagonal line */
+    return Math.abs(q[0] - p[0]) + Math.abs(q[1] - p[1]);
 }
 
-function length(points) {
-    var a = distance(points[0], points[1]);
-    var b = distance(points[1], points[2]);
-    var c = distance(points[2], points[3]);
-    if (a == 0 || b == 0 || c == 0) {
+function pathLength(path) {
+    var a = lineLength(path[0], path[1]);
+    var b = lineLength(path[1], path[2]);
+    var c = lineLength(path[2], path[3]);
+    if (a == 0 || b == 0 || c == 0) { /* prefer fewer corners */
         return 0;
     }
     return a + b + c;
 }
 
-function byLength(a, b) {
-    return length(a) - length(b);
+function byLength(path1, path2) {
+    return pathLength(path1) - pathLength(path2);
 }
 
-function trim(points) {
-    var sorted = points.slice(0).sort(byLength);
-    var len = length(sorted[0]);
-    for (var i = sorted.length - 1; i >= 0; i--) {
-        if (length(sorted[i]) > len) {
-            sorted.pop();
+function trimPaths(paths) { /* mutating function */
+    paths.sort(byLength);
+    var minlength = pathLength(paths[0]);
+    for (var i = paths.length - 1; i >= 0; i--) {
+        if (pathLength(paths[i]) > minlength) {
+            paths.pop();
         }
         else {
             break;
         }
     }
-    console.log(points, sorted);
-    return sorted;
 }
 
-var linelayer;
+/* Draw Path */
 
-function hideLines() {
-    linelayer.classList.add("hidden");
+function showPath() {
+    pathmap.classList.remove("hidden");
 }
 
-function layline(points) {
+function hidePath() {
+    pathmap.classList.add("hidden");
+}
+
+function drawPath(path) {
     var box = board.getBoundingClientRect();
     if (box.width > box.height) {
         var size = box.width / 9;
         var x = box.left + size / 2;
         var y = box.top + size / 2;
-        for (var polyline of linelayer.children) {
+        for (var polyline of pathmap.children) {
             polyline.setAttribute("points", [
-                (x + points[0][0] * size) + "," + (y + points[0][1] * size),
-                (x + points[1][0] * size) + "," + (y + points[1][1] * size),
-                (x + points[2][0] * size) + "," + (y + points[2][1] * size),
-                (x + points[3][0] * size) + "," + (y + points[3][1] * size)
+                (x + path[0][0] * size) + "," + (y + path[0][1] * size),
+                (x + path[1][0] * size) + "," + (y + path[1][1] * size),
+                (x + path[2][0] * size) + "," + (y + path[2][1] * size),
+                (x + path[3][0] * size) + "," + (y + path[3][1] * size)
             ].join(" "));
         }
     }
@@ -212,82 +217,62 @@ function layline(points) {
         var size = box.height / 9;
         var x = box.right - size / 2;
         var y = box.top + size / 2;
-        for (var polyline of linelayer.children) {
+        for (var polyline of pathmap.children) {
             polyline.setAttribute("points", [
-                (x - points[0][1] * size) + "," + (y + points[0][0] * size),
-                (x - points[1][1] * size) + "," + (y + points[1][0] * size),
-                (x - points[2][1] * size) + "," + (y + points[2][0] * size),
-                (x - points[3][1] * size) + "," + (y + points[3][0] * size)
+                (x - path[0][1] * size) + "," + (y + path[0][0] * size),
+                (x - path[1][1] * size) + "," + (y + path[1][0] * size),
+                (x - path[2][1] * size) + "," + (y + path[2][0] * size),
+                (x - path[3][1] * size) + "," + (y + path[3][0] * size)
             ].join(" "));
         }
     }
-    linelayer.classList.remove("hidden");
-    setTimeout(hideLines, 250);
+    showPath();
+    setTimeout(hidePath, 250);
 }
 
-function animateMatch(p, q) {
-    tiles[p].classList.add("matched");
-    tiles[q].classList.add("matched");
-    // setTimeout(updateBoard, 1000);
-}
-
-function weight(points) {
-    var a = points[0];
-    var b = points[1];
-    var c = points[2];
-    var d = points[3];
-    var length = Math.abs
-}
-
-function match(selected, id) {
-    if (selected % 18 == id % 18 && selected != id) {
-        var p = ids.indexOf(selected);
-        var q = ids.indexOf(id);
-        var solutions = solve(p, q);
-        if (solutions.length) {
-            var trimmed = trim(solutions);
-            var solution = trimmed[Math.floor(Math.random() * trimmed.length)];
-            layline(solution);
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
+/* Select Tile */
 
 function select(tile) {
     if (tile.target) {
         tile = tile.target;
     }
-    var id = parseInt(tile.id);
     if (tile.classList.contains("tile")) {
-        if (typeof selected != "undefined") {
-            if (match(selected, id)) {
-                tile.classList.add("selected");
-                animateMatch(selected, id); // maybe put in match()
-            }
-            else {
-                tiles[selected].classList.remove("selected");
-            }
-            selected = undefined;
+        var qid = parseInt(tile.id);
+        if (typeof pid == "undefined") {
+            tile.classList.add("selected");
+            pid = qid;
         }
         else {
-            tile.classList.add("selected");
-            selected = id;
+            var p = ids.indexOf(pid);
+            var q = ids.indexOf(qid);
+            var paths = findPaths(p, q);
+            if (pid != qid && pid % 18 == qid % 18 && paths.length) { /* valid match */
+                tile.classList.add("selected");
+                tile.classList.add("matched");
+                tiles[pid].classList.add("matched");
+                trimPaths(paths);
+                drawPath(paths[Math.floor(Math.random() * paths.length)]);
+            }
+            else {
+                tiles[pid].classList.remove("selected");
+            }
+            pid = undefined;
         }
     }
     else if (tile.id != "board") {
-        select(tile.parentElement);
+        select(tile.parentElement); /* bubble up */
     }
 }
 
-function init() {
-    linelayer = document.getElementById("linelayer");
-    board = document.getElementById("board");
-    shuffle = document.getElementById("shuffle");
+/* Initialize Listeners */
 
-    board.addEventListener("click", select);
+function init() {
+    shuffle = document.getElementById("shuffle");
+    board = document.getElementById("board");
+    pathmap = document.getElementById("pathmap");
+
     shuffle.addEventListener("click", shuffleTiles);
+    board.addEventListener("click", select);
 
     initTiles();
     shuffleTiles();

@@ -8,6 +8,7 @@ body {
     background: url(img/bg.png);
     background-size: cover;
     margin: 0;
+    user-select: none;
     transform-style: preserve-3d;
 }
 
@@ -49,7 +50,6 @@ body {
     display: grid;
     grid-template-columns: repeat(9, auto);
     margin: auto;
-    user-select: none;
 }
 
 .tile {
@@ -121,7 +121,7 @@ body {
     }
 }
 
-#linelayer {
+#pathmap {
     position: absolute;
     top: 0;
     width: 100%;
