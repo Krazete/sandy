@@ -1,15 +1,21 @@
 /* Elements */
 
+var banner, start;
+
+var game;
 var shuffle;
 var board;
 var tiles = [];
 var pathmap;
+
+var result;
 
 /* Data */
 
 var empty = [];
 var ids = [];
 var pid;
+var matches = 0;
 
 /* Initialize Board */
 
@@ -110,6 +116,10 @@ function getRange(x, y) {
 }
 
 function findPaths(p, q) {
+    if (ids[p] == ids[q] || ids[p] % 18 != ids[q] % 18) { /* invalid match */
+        return [];
+    }
+
     var paths = [];
 
     var px = p % 9;
@@ -146,10 +156,6 @@ function findPaths(p, q) {
         if (i == px || i == qx) {
             paths.push([[px, py], [px, j], [qx, j], [qx, qy]]);
         }
-    }
-    if (paths.length) {
-        empty[p] = true;
-        empty[q] = true;
     }
     return paths;
 }
@@ -246,12 +252,19 @@ function select(tile) {
             var p = ids.indexOf(pid);
             var q = ids.indexOf(qid);
             var paths = findPaths(p, q);
-            if (pid != qid && pid % 18 == qid % 18 && paths.length) { /* valid match */
+            if (paths.length) {
                 tile.classList.add("selected");
                 tile.classList.add("matched");
                 tiles[pid].classList.add("matched");
                 trimPaths(paths);
                 drawPath(paths[Math.floor(Math.random() * paths.length)]);
+
+                empty[p] = true;
+                empty[q] = true;
+                matches++;
+                if (matches >= 18) {
+                    endGame();
+                }
             }
             else {
                 tiles[pid].classList.remove("selected");
@@ -264,13 +277,35 @@ function select(tile) {
     }
 }
 
+/* Start of Game */
+
+function startGame() {
+    banner.classList.add("hidden");
+    result.classList.add("hidden");
+    game.classList.remove("hidden");
+}
+
+/* End of Game */
+
+function endGame() {
+    game.classList.add("ended");
+    result.classList.remove("hidden");
+}
+
 /* Initialize Listeners */
 
 function init() {
+    banner = document.getElementById("banner");
+    start = document.getElementById("start");
+
+    game = document.getElementById("game");
     shuffle = document.getElementById("shuffle");
     board = document.getElementById("board");
     pathmap = document.getElementById("pathmap");
 
+    result = document.getElementById("result");
+
+    start.addEventListener("click", startGame);
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", select);
 

@@ -5,11 +5,10 @@ html, body {
 }
 
 body {
-    background: url(img/bg.png);
-    background-size: cover;
+    background: #b3d0f0;
     margin: 0;
-    user-select: none;
     transform-style: preserve-3d;
+    user-select: none;
 }
 
 .hidden {
@@ -21,7 +20,15 @@ body {
     pointer-events: none;
 }
 
-#container {
+.card {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.container {
     position: relative;
     top: 50%;
     width: min-content;
@@ -30,9 +37,44 @@ body {
     transform-style: preserve-3d;
 }
 
+#banner {
+    background: #00000080;
+}
+
+#banner2 {
+    max-height: 100vh;
+    max-width: 100vw;
+}
+
+#mic {
+    position: absolute;
+    bottom: 8%;
+    right: 56%;
+    width: 7%;
+}
+
+#start {
+    position: absolute;
+    bottom: 17%;
+    right: -2.4%;
+    width: 22%;
+    transform: rotate(-8deg);
+    cursor: pointer;
+}
+
+#game {
+    background: url(img/bg.png);
+    background-size: cover;
+}
+
+
+
+
 /* #banner {
     display: block;
 } */
+
+/* Top Bar */
 
 #topbar {
     height: 10vh;
@@ -41,6 +83,12 @@ body {
 #topbar img {
     height: 10vh;
 }
+
+#shuffle {
+    cursor: pointer;
+}
+
+/* Board and Tiles */
 
 #board {
     background: #ffffff80;
@@ -128,4 +176,20 @@ body {
     height: 100%;
     filter: drop-shadow(0 0 3px #fec75c);
     pointer-events: none;
+}
+
+/* End Card */
+
+.ended {
+    filter: blur(1vh);
+}
+
+#result {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #00000080;
+    z-index: 1;
 }
