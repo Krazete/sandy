@@ -3,12 +3,13 @@
 var banner, start;
 
 var game;
+var countdown;
 var shuffle;
 var board;
 var tiles = [];
 var pathmap;
 
-var result;
+var result, record, again;
 
 /* Data */
 
@@ -210,8 +211,8 @@ function drawPath(path) {
         var size = box.width / 9;
         var x = box.left + size / 2;
         var y = box.top + size / 2;
-        for (var polyline of pathmap.children) {
-            polyline.setAttribute("points", [
+        for (var i = 0; i < 2; i++) {
+            pathmap.children[i].setAttribute("points", [
                 (x + path[0][0] * size) + "," + (y + path[0][1] * size),
                 (x + path[1][0] * size) + "," + (y + path[1][1] * size),
                 (x + path[2][0] * size) + "," + (y + path[2][1] * size),
@@ -223,8 +224,8 @@ function drawPath(path) {
         var size = box.height / 9;
         var x = box.right - size / 2;
         var y = box.top + size / 2;
-        for (var polyline of pathmap.children) {
-            polyline.setAttribute("points", [
+        for (var i = 0; i < 2; i++) {
+            pathmap.children[i].setAttribute("points", [
                 (x - path[0][1] * size) + "," + (y + path[0][0] * size),
                 (x - path[1][1] * size) + "," + (y + path[1][0] * size),
                 (x - path[2][1] * size) + "," + (y + path[2][0] * size),
@@ -277,19 +278,39 @@ function select(tile) {
     }
 }
 
-/* Start of Game */
+/* Start Game */
 
 function startGame() {
     banner.classList.add("hidden");
     result.classList.add("hidden");
     game.classList.remove("hidden");
+
+    for (var i = 0; i < 4; i++) {
+        countdown.children[i].classList.add("gogogo" + i);
+    }
+    setTimeout(reallyStart, 4000);
 }
 
-/* End of Game */
+function reallyStart() {
+    countdown.classList.add("hidden");
+}
+
+/* End Game */
 
 function endGame() {
     game.classList.add("ended");
     result.classList.remove("hidden");
+}
+
+/* Restart Game */
+
+function restartGame() {
+    for (var i = 0; i < 4; i++) {
+        countdown.children[i].classList.remove("gogogo" + i);
+    }
+    countdown.classList.remove("hidden");
+
+    startGame();
 }
 
 /* Initialize Listeners */
@@ -298,16 +319,19 @@ function init() {
     banner = document.getElementById("banner");
     start = document.getElementById("start");
 
+    countdown = document.getElementById("countdown");
     game = document.getElementById("game");
     shuffle = document.getElementById("shuffle");
     board = document.getElementById("board");
     pathmap = document.getElementById("pathmap");
 
     result = document.getElementById("result");
+    again = document.getElementById("again");
 
     start.addEventListener("click", startGame);
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", select);
+    again.addEventListener("click", restartGame);
 
     initTiles();
     shuffleTiles();

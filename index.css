@@ -37,6 +37,8 @@ body {
     transform-style: preserve-3d;
 }
 
+/* Banner */
+
 #banner {
     background: #00000080;
 }
@@ -53,6 +55,16 @@ body {
     width: 7%;
 }
 
+#rules {
+    display: block;
+    position: absolute;
+    bottom: 14%;
+    right: 16%;
+    transform: rotate(-8deg);
+    width: 38%;
+    color: white;
+}
+
 #start {
     position: absolute;
     bottom: 17%;
@@ -62,17 +74,53 @@ body {
     cursor: pointer;
 }
 
+/* Game */
+
 #game {
     background: url(img/bg.png);
     background-size: cover;
 }
 
+#countdown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #00000080;
+}
 
+#countdown img {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
+.gogogo0 {
+    animation: 1s vwoom;
+}
+.gogogo1 {
+    animation: 1s 1s vwoom;
+}
+.gogogo2 {
+    animation: 1s 2s vwoom;
+}
+.gogogo3 {
+    animation: 1s 3s vwoom;
+}
 
-/* #banner {
-    display: block;
-} */
+@keyframes vwoom {
+    0% {
+        opacity: 0%;
+        width: 100%;
+    }
+    100% {
+        opacity: 100%;
+        width: 0;
+    }
+}
 
 /* Top Bar */
 
@@ -192,4 +240,12 @@ body {
     right: 0;
     background: #00000080;
     z-index: 1;
+}
+
+#again {
+    position: absolute;
+    width: 18%;
+    bottom: 8%;
+    right: 20%;
+    cursor: pointer;
 }

@@ -6,11 +6,19 @@
     <script src="index.js"></script>
 </head>
 <body>
-    <!-- <img id="three" src="img/3.png">
-    <img id="two" src="img/2.png">
-    <img id="one" src="img/1.png">
-    <img id="zero" src="img/0.png"> -->
-    <div id="game" class="card">
+    <div id="banner" class="card">
+        <div class="container">
+            <img id="banner2" src="img/banner.png">
+            <img id="mic" src="img/mic.png">
+            <img id="start" src="img/start.png">
+            <div id="rules">
+                Clear the board by drawing a line to connect identical character tiles.
+                The line can only bend twice to reach the other tile.
+                The connection can't be made if the line has to bend more than 2 times.
+            </div>
+        </div>
+    </div>
+    <div id="game" class="card hidden">
         <div class="container">
             <div id="topbar">
                 <img src="img/time.png">
@@ -23,17 +31,17 @@
             <polyline fill="none" stroke="#fec75c" stroke-width="0.5%"></polyline>
             <polyline fill="none" stroke="#fff857" stroke-width="0.3%"></polyline>
         </svg>
+        <div id="countdown">
+            <img src="img/3.png">
+            <img src="img/2.png">
+            <img src="img/1.png">
+            <img src="img/0.png">
+        </div>
     </div>
     <div id="result" class="card hidden">
         <div class="container">
             <img src="img/result.png">
-        </div>
-    </div>
-    <div id="banner" class="card">
-        <div class="container">
-            <img id="banner2" src="img/banner.png">
-            <img id="mic" src="img/mic.png">
-            <img id="start" src="img/start.png">
+            <img id="again" src="img/again.png">
         </div>
     </div>
 </body>
