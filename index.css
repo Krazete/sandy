@@ -174,7 +174,8 @@ body {
 
 .tile img {
     position: absolute;
-    width: 90%;
+    max-width: 90%;
+    max-height: 90%;
     top: 0;
     left: 0;
     bottom: 0;

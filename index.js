@@ -25,7 +25,7 @@ function newTile(id) {
     var icon = document.createElement("img");
     tile.id = id;
     tile.className = "tile";
-    icon.src = "tile/" + (id % 18 + 1) + ".png";
+    icon.src = "vtile/" + (id % 18 + 1) + ".png";
     tile.appendChild(icon);
     return tile;
 }
