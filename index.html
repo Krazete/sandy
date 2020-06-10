@@ -6,28 +6,13 @@
     <script src="index.js"></script>
 </head>
 <body>
-    <div id="banner" class="card">
-        <div class="container">
-            <img id="banner2" src="img/banner.png">
-            <img id="mic" src="img/mic.png">
-            <img id="start" src="img/start.png">
-            <div id="rules">
-                Clear the board by drawing a line to connect identical character tiles.
-                <br>
-                The line can only bend twice to reach the other tile.
-                <br>
-                The connection can't be made if the line has to bend more than 2 times.
-            </div>
-        </div>
-    </div>
-    <div id="game" class="card hidden">
+    <div id="game" class="card idle">
         <div class="container">
             <div id="topbar">
                 <img src="img/time.png">
                 <img id="shuffle" src="img/shuffle.png">
             </div>
-            <div id="board">
-            </div>
+            <div id="board"></div>
         </div>
         <svg id="pathmap">
             <polyline fill="none" stroke="#fec75c" stroke-width="0.5%"></polyline>
@@ -40,9 +25,23 @@
             <img src="img/0.png">
         </div>
     </div>
+    <div id="banner" class="card">
+        <div class="container">
+            <img id="banner-bg" src="img/banner.png">
+            <img id="mic" src="img/mic.png">
+            <img id="start" src="img/start.png">
+            <div id="rules">
+                Clear the board by drawing a line to connect identical character tiles.
+                <br>
+                The line can only bend twice to reach the other tile.
+                <br>
+                The connection can't be made if the line has to bend more than 2 times.
+            </div>
+        </div>
+    </div>
     <div id="result" class="card hidden">
         <div class="container">
-            <img src="img/result.png">
+            <img id="result-bg" src="img/result.png">
             <img id="again" src="img/again.png">
         </div>
     </div>

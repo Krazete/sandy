@@ -6,7 +6,7 @@ var game;
 var countdown;
 var shuffle;
 var board;
-var tiles = [];
+var tiles;
 var pathmap;
 
 var result, record, again;
@@ -25,7 +25,7 @@ function newTile(id) {
     var icon = document.createElement("img");
     tile.id = id;
     tile.className = "tile";
-    icon.src = "vtile/" + (id % 18 + 1) + ".png";
+    icon.src = "tile/" + (id % 18 + 1) + ".png";
     tile.appendChild(icon);
     return tile;
 }
@@ -281,14 +281,17 @@ function select(tile) {
 /* Start Game */
 
 function startGame() {
+    game.classList.remove("idle");
     banner.classList.add("hidden");
     result.classList.add("hidden");
-    game.classList.remove("hidden");
 
     for (var i = 0; i < 4; i++) {
-        countdown.children[i].classList.add("gogogo" + i);
+        countdown.children[i].classList.add("tick" + i);
     }
     setTimeout(reallyStart, 4000);
+
+    initTiles();
+    shuffleTiles();
 }
 
 function reallyStart() {
@@ -298,7 +301,7 @@ function reallyStart() {
 /* End Game */
 
 function endGame() {
-    game.classList.add("ended");
+    game.classList.add("idle");
     result.classList.remove("hidden");
 }
 
@@ -306,7 +309,7 @@ function endGame() {
 
 function restartGame() {
     for (var i = 0; i < 4; i++) {
-        countdown.children[i].classList.remove("gogogo" + i);
+        countdown.children[i].classList.remove("tick" + i);
     }
     countdown.classList.remove("hidden");
 
@@ -319,8 +322,8 @@ function init() {
     banner = document.getElementById("banner");
     start = document.getElementById("start");
 
-    countdown = document.getElementById("countdown");
     game = document.getElementById("game");
+    countdown = document.getElementById("countdown");
     shuffle = document.getElementById("shuffle");
     board = document.getElementById("board");
     pathmap = document.getElementById("pathmap");
@@ -332,9 +335,6 @@ function init() {
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", select);
     again.addEventListener("click", restartGame);
-
-    initTiles();
-    shuffleTiles();
 }
 
 window.addEventListener("DOMContentLoaded", init);

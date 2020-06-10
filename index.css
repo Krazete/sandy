@@ -5,9 +5,10 @@ html, body {
 }
 
 body {
-    background: #b3d0f0;
-    margin: 0;
+    background-image: url(img/bg.png); /* fill edge blur */
+    background-size: cover;
     transform-style: preserve-3d;
+    margin: 0;
     user-select: none;
 }
 
@@ -22,54 +23,57 @@ body {
 
 .card {
     position: absolute;
-    top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .container {
     position: relative;
-    top: 50%;
     width: min-content;
+    top: 50%;
     transform: translateY(-50%);
-    margin: auto;
     transform-style: preserve-3d;
+    margin: auto;
 }
 
 /* Banner */
 
 #banner {
-    background: #00000080;
+    background-color: #00000080;
 }
 
-#banner2 {
-    max-height: 100vh;
+#banner-bg {
     max-width: 100vw;
+    max-height: 100vh;
 }
 
 #mic {
     position: absolute;
-    bottom: 8%;
-    right: 56%;
     width: 7%;
+    right: 56%;
+    bottom: 8%;
 }
 
 #rules {
-    display: block;
     position: absolute;
-    bottom: 14%;
-    right: 16%;
-    transform: rotate(-8deg);
     width: 38%;
+    height: 19%;
+    right: 16%;
+    bottom: 12%;
+    transform: rotate(-8deg);
     color: white;
+    font-size: 1.5vw;
+    display: block;
+    overflow: scroll;
 }
 
 #start {
     position: absolute;
-    bottom: 17%;
-    right: -2.4%;
     width: 22%;
+    right: -2.4%;
+    bottom: 17%;
     transform: rotate(-8deg);
     cursor: pointer;
 }
@@ -77,48 +81,48 @@ body {
 /* Game */
 
 #game {
-    background: url(img/bg.png);
+    background-image: url(img/bg.png);
     background-size: cover;
 }
 
 #countdown {
+    background: #00000080;
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
+    top: 0;
     bottom: 0;
-    background: #00000080;
 }
 
 #countdown img {
-    position: absolute;
     opacity: 0;
-    top: 50%;
+    position: absolute;
     left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
-.gogogo0 {
+.tick0 {
     animation: 1s vwoom;
 }
-.gogogo1 {
+.tick1 {
     animation: 1s 1s vwoom;
 }
-.gogogo2 {
+.tick2 {
     animation: 1s 2s vwoom;
 }
-.gogogo3 {
+.tick3 {
     animation: 1s 3s vwoom;
 }
 
 @keyframes vwoom {
     0% {
         opacity: 0%;
-        width: 100%;
+        height: 80vh;
     }
     100% {
         opacity: 100%;
-        width: 0;
+        height: 20vh;
     }
 }
 
@@ -140,19 +144,19 @@ body {
 
 #board {
     background: #ffffff80;
-    border: 1px solid white;
-    border-radius: 2vh;
     position: relative;
     display: grid;
     grid-template-columns: repeat(9, auto);
+    border: 1px solid white;
+    border-radius: 2vh;
     margin: auto;
 }
 
 .tile {
     position: relative;
     width: 9vw;
-    max-width: 16vh;
     height: 9vw;
+    max-width: 16vh;
     max-height: 16vh;
     cursor: pointer;
 }
@@ -166,20 +170,19 @@ body {
     .tile {
         position: relative;
         width: 9vh;
-        max-width: 16vw;
         height: 9vh;
+        max-width: 16vw;
         max-height: 16vw;
     }
 }
 
 .tile img {
     position: absolute;
-    max-width: 90%;
-    max-height: 90%;
-    top: 0;
+    width: 90%;
     left: 0;
-    bottom: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
     margin: auto;
     /* todo: below is temporary */
     /* filter: blur(2vh); */
@@ -191,11 +194,11 @@ body {
     background: url(img/selected.png);
     background-size: contain;
     background-repeat: no-repeat;
-    display: block;
-    width: 100%;
-    height: 100%;
     opacity: 0.5;
     position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .tile.selected:after {
@@ -220,33 +223,39 @@ body {
 
 #pathmap {
     position: absolute;
-    top: 0;
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 0 3px #fec75c);
+    top: 0;
+    filter: drop-shadow(0 0 3px #fec75c); /* check caniuse for compatibility */
     pointer-events: none;
 }
 
 /* End Card */
 
-.ended {
+.idle {
     filter: blur(1vh);
 }
 
 #result {
+    background: #00000080;
     position: absolute;
-    top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
-    background: #00000080;
+    top: 0;
+    bottom: 0;
     z-index: 1;
+}
+
+#result-bg {
+    max-width: 100vw;
+    max-height: 100vh;
+    transform: translate(-5%, -10%);
 }
 
 #again {
     position: absolute;
     width: 18%;
-    bottom: 8%;
-    right: 20%;
+    right: 25%;
+    bottom: 18%;
     cursor: pointer;
 }
