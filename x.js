@@ -33,8 +33,8 @@ function Board(root, n) {
     this.activeset = [];
     this.orderset = [];
 
-    for (var i = 0; i < n; i++) {
-        for (var j = 0; j < 2; j++) {
+    for (var j = 0; j < 2; j++) {
+        for (var i = 0; i < n; i++) {
             var icon = new Image();
             icon.src = root + "/" + (i + 1) + ".png";
 
@@ -43,7 +43,7 @@ function Board(root, n) {
 
             this.tileset.push(tile);
             this.activeset.push(true);
-            this.orderset.push(2 * j + i);
+            this.orderset.push(i + this.length * j);
         }
     }
 
@@ -158,7 +158,6 @@ Board.prototype.findPaths = function (p, q) {
         var py = Math.floor(p / this.width);
         var qx = q % this.width;
         var qy = Math.floor(q / this.width);
-        console.log(px, py, qx, qy);
 
         var pd = this.getDomain(px, py);
         var qd = this.getDomain(qx, qy);
@@ -170,8 +169,7 @@ Board.prototype.findPaths = function (p, q) {
 
         for (var i = domain[0]; i <= domain[1]; i++) {
             for (var j = Math.min(py, qy) + 1; j < Math.max(py, qy); j++) {
-                var k = i + this.width * j;
-                if (!(i < 0 || i > this.width - 1 || j < 0 || j > this.height - 1 || empty[k])) {
+                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.activeset[i + this.width * j]) {
                     break;
                 }
             }
@@ -182,8 +180,7 @@ Board.prototype.findPaths = function (p, q) {
 
         for (var j = range[0]; j <= range[1]; j++) {
             for (var i = Math.min(px, qx) + 1; i < Math.max(px, qx); i++) {
-                var k = i + this.width * j;
-                if (!(i < 0 || i > this.width - 1 || j < 0 || j > this.height - 1 || empty[k])) {
+                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.activeset[i + this.width * j]) {
                     break;
                 }
             }
@@ -193,5 +190,5 @@ Board.prototype.findPaths = function (p, q) {
         }
     }
 
-    return paths;
+    return shortestPaths(paths);
 }

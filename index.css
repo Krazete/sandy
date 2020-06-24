@@ -152,7 +152,7 @@ body {
     margin: auto;
 }
 
-.tile {
+#board div {
     position: relative;
     width: 9vw;
     height: 9vw;
@@ -167,7 +167,7 @@ body {
         grid-template-rows: repeat(9, auto);
         direction: rtl;
     }
-    .tile {
+    #board div {
         position: relative;
         width: 9vh;
         height: 9vh;
@@ -176,7 +176,7 @@ body {
     }
 }
 
-.tile img {
+#board img {
     position: absolute;
     width: 90%;
     left: 0;
@@ -189,7 +189,7 @@ body {
     /* clip: rect(0, 14.4vh, 14.4vh, 0); */
 }
 
-.tile:hover:after, .tile.selected:after {
+#board div:hover:after, #board div.selected:after {
     content: "";
     background: url(img/selected.png);
     background-size: contain;
@@ -201,11 +201,11 @@ body {
     display: block;
 }
 
-.tile.selected:after {
+#board div.selected:after {
     opacity: 1;
 }
 
-.tile.matched {
+#board div.matched {
     animation: 300ms bloop forwards;
 }
 

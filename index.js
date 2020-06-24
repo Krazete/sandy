@@ -142,9 +142,9 @@ function startGame() {
     }
     setTimeout(reallyStart, 4000);
 
-    // currentBoard = new Board("tile", 18);
+    // currentBoard = new Board("vtile", 20);
     currentBoard = new Board("tile", 18);
-    currentBoard.shuffle();
+    shuffleTiles();
 }
 
 function reallyStart() {
@@ -160,6 +160,9 @@ function endGame() {
 
 function shuffleTiles() {
     currentBoard.shuffle();
+    for (var i = 0; i < currentBoard.orderset.length; i++) {
+        board.appendChild(currentBoard.tileset[currentBoard.orderset[i]]);
+    }
 }
 
 /* Restart Game */
