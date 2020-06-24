@@ -1,15 +1,8 @@
 /* Elements */
 
 var banner, start;
-
-var game;
-var countdown;
-var shuffle;
-var board;
-var tiles;
-var pathmap;
-
-var result, record, again;
+var game, countdown, shuffle, board, pathmap;
+var result, record, victory, again;
 
 /* Data */
 
@@ -189,6 +182,8 @@ function init() {
     pathmap = document.getElementById("pathmap");
 
     result = document.getElementById("result");
+    record = document.getElementById("record");
+    victory = document.getElementById("victory");
     again = document.getElementById("again");
 
     start.addEventListener("click", startGame);
