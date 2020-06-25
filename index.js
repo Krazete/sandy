@@ -127,6 +127,7 @@ var currentBoard;
 
 function startGame() {
     game.classList.remove("idle");
+    countdown.classList.remove("hidden");
     banner.classList.add("hidden");
     result.classList.add("hidden");
 

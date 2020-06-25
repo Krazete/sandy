@@ -49,6 +49,21 @@ body {
     max-height: 100vh;
 }
 
+#sandy {
+    position: absolute;
+    width: 85%;
+    left: -22.3%;
+    top: -17.6%;
+    transform: rotate(-2deg);
+}
+
+#ai {
+    position: absolute;
+    width: 85%;
+    left: -30%;
+    top: -21%;
+}
+
 #mic {
     position: absolute;
     width: 7%;
