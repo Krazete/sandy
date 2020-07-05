@@ -2,7 +2,7 @@
 
 var banner, start;
 var game, countdown, shuffle, board, pathmap;
-var result, record, victory, again;
+var result, newrecord, victory, again;
 
 /* Data */
 
@@ -82,8 +82,35 @@ function drawPath(path) {
 
 /* Select Tile */
 
-function select(tile) {
-    if (tile.target) {
+var i0;
+
+function selectTile(e) {
+    if ("i" in e.target.dataset) {
+        e.target.classList.add("selected");
+        var i = parseInt(e.target.dataset.i);
+        if (typeof i0 == "undefined") {
+            i0 = i;
+        }
+        else {
+            i0 = undefined;
+        }
+        console.log(currentBoard.tileset[i]);
+        console.log(currentBoard.orderset.indexOf(i));
+        currentBoard.select(i);
+    }
+
+    return;
+
+    if (typeof i0 == "undefined") {
+        i0 = i;
+    }
+    else {
+        // dostuff
+        i0 = undefined;
+    }
+
+    if (e.target) {
+        console.log(tile.target);
         tile = tile.target;
     }
     if (tile.classList.contains("tile")) {
@@ -117,32 +144,52 @@ function select(tile) {
         }
     }
     else if (tile.id != "board") {
-        select(tile.parentElement); /* bubble up */
+        selectTile(tile.parentElement); /* bubble up */
     }
+}
+
+/* * */
+
+var currentBoard;
+var time0;
+
+function formatTime(time) {
+    var ms = parseInt(time / 10) % 100;
+    var s = parseInt(time / 1000) % 60;
+    var m = parseInt(time / 60000);
+    return m + "'" + s.toString().padStart(2, "0") + "'" + ms.toString().padStart(2, "0");
+}
+
+function timer() {
+    time.innerHTML = formatTime(Date.now() - time0);
+    requestAnimationFrame(timer);
 }
 
 /* Start Game */
 
-var currentBoard;
-
 function startGame() {
     game.classList.remove("idle");
     countdown.classList.remove("hidden");
-    banner.classList.add("hidden");
-    result.classList.add("hidden");
-
     for (var i = 0; i < 4; i++) {
         countdown.children[i].classList.add("tick" + i);
     }
-    setTimeout(reallyStart, 4000);
+    banner.classList.add("hidden");
+    result.classList.add("hidden");
 
     // currentBoard = new Board("vtile", 20);
+    record.innerHTML = "0'00'00";
+    time.innerHTML = "0'00'00";
     currentBoard = new Board("tile", 18);
     shuffleTiles();
+    setTimeout(reallyStart, 4000);
 }
 
 function reallyStart() {
+    time0 = Date.now();
     countdown.classList.add("hidden");
+    for (var i = 0; i < 4; i++) {
+        countdown.children[i].classList.remove("tick" + i);
+    }
 }
 
 /* End Game */
@@ -173,24 +220,28 @@ function restartGame() {
 /* Initialize Listeners */
 
 function init() {
-    banner = document.getElementById("banner");
-    start = document.getElementById("start");
-
     game = document.getElementById("game");
     countdown = document.getElementById("countdown");
+    record = document.getElementById("record");
+    time = document.getElementById("time");
     shuffle = document.getElementById("shuffle");
     board = document.getElementById("board");
     pathmap = document.getElementById("pathmap");
 
+    banner = document.getElementById("banner");
+    start = document.getElementById("start");
+
     result = document.getElementById("result");
-    record = document.getElementById("record");
+    newrecord = document.getElementById("record");
     victory = document.getElementById("victory");
     again = document.getElementById("again");
 
-    start.addEventListener("click", startGame);
     shuffle.addEventListener("click", shuffleTiles);
-    board.addEventListener("click", select);
+    board.addEventListener("click", selectTile);
+    start.addEventListener("click", startGame);
     again.addEventListener("click", restartGame);
+
+    timer();
 }
 
 window.addEventListener("DOMContentLoaded", init);

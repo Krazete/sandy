@@ -33,18 +33,17 @@ function Board(root, n) {
     this.activeset = [];
     this.orderset = [];
 
-    for (var j = 0; j < 2; j++) {
-        for (var i = 0; i < n; i++) {
-            var icon = new Image();
-            icon.src = root + "/" + (i + 1) + ".png";
+    for (var i = 0; i < 2 * n; i++) {
+        var icon = new Image();
+        icon.src = root + "/" + (i % n + 1) + ".png";
 
-            var tile = document.createElement("div");
-            tile.appendChild(icon);
+        var tile = document.createElement("div");
+        tile.dataset.i = i;
+        tile.appendChild(icon);
 
-            this.tileset.push(tile);
-            this.activeset.push(true);
-            this.orderset.push(i + this.length * j);
-        }
+        this.tileset.push(tile);
+        this.activeset.push(true);
+        this.orderset.push(i);
     }
 
     boards[root] = this;
@@ -88,7 +87,7 @@ Board.prototype.getDomain = function (x, y) {
     }
 
     return domain;
-}
+};
 
 Board.prototype.getRange = function (x, y) {
     var range = [-1, this.height];
@@ -107,7 +106,7 @@ Board.prototype.getRange = function (x, y) {
     }
 
     return range;
-}
+};
 
 function manhattanDistance(a, b) {
     return Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
@@ -150,10 +149,7 @@ function shortestPaths(paths) {
 Board.prototype.findPaths = function (p, q) {
     var paths = [];
 
-    if (
-        this.orderset[p] != this.orderset[q] &&
-        this.orderset[p] % this.length == this.orderset[q] % this.length
-    ) {
+    if (this.orderset[p] + this.orderset[q] == this.length) {
         var px = p % this.width;
         var py = Math.floor(p / this.width);
         var qx = q % this.width;
@@ -191,4 +187,15 @@ Board.prototype.findPaths = function (p, q) {
     }
 
     return shortestPaths(paths);
-}
+};
+
+Board.prototype.select = function select(i) {
+    this.tileset[i].classList.add("selected");
+    if (typeof this.selected == "undefined") {
+        this.selected = i;
+    }
+    else {
+        console.log(this.selected, i);
+        this.selected = undefined;
+    }
+};

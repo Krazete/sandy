@@ -9,6 +9,7 @@ body {
     background-size: cover;
     transform-style: preserve-3d;
     margin: 0;
+    overflow: hidden;
     user-select: none;
 }
 
@@ -41,6 +42,7 @@ body {
 /* Banner */
 
 #banner {
+    background: rgba(0, 0, 0, 128);
     background-color: #00000080;
 }
 
@@ -55,6 +57,7 @@ body {
     left: -22.3%;
     top: -17.6%;
     transform: rotate(-2deg);
+    animation: 10s appear ease-in forwards;
 }
 
 #ai {
@@ -62,6 +65,16 @@ body {
     width: 85%;
     left: -30%;
     top: -21%;
+    animation: 1s appear ease-in forwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #mic {
@@ -101,6 +114,7 @@ body {
 }
 
 #countdown {
+    background: rgba(0, 0, 0, 128);
     background: #00000080;
     position: absolute;
     left: 0;
@@ -132,35 +146,54 @@ body {
 
 @keyframes vwoom {
     0% {
-        opacity: 0%;
+        opacity: 0;
         height: 80vh;
     }
     100% {
-        opacity: 100%;
+        opacity: 1;
         height: 20vh;
     }
 }
 
-/* Top Bar */
+/* Game */
 
-#topbar {
-    height: 10vh;
+#game .container {
+    display: grid;
+    grid-template:
+        'a b c'
+        'd d d'
+    ;
+    grid-template-columns: max-content auto max-content;
 }
 
-#topbar img {
-    height: 10vh;
+#recordtimelabel {
+    height: 9vmin;
+    grid-area: a;
+    margin: auto;
+}
+
+#recordtime {
+    grid-area: b;
+}
+
+#record, #time {
+    color: #5b5973;
+    font-family: Impact;
+    font-size: 4vmin;
 }
 
 #shuffle {
+    height: 7vmin;
+    grid-area: c;
+    margin: 1vmin auto;
     cursor: pointer;
 }
-
-/* Board and Tiles */
 
 #board {
     background: #ffffff80;
     position: relative;
     display: grid;
+    grid-area: d;
     grid-template-columns: repeat(9, auto);
     border: 1px solid white;
     border-radius: 2vh;
@@ -169,25 +202,26 @@ body {
 
 #board div {
     position: relative;
-    width: 9vw;
-    height: 9vw;
-    max-width: 16vh;
-    max-height: 16vh;
+    width: 9vmax;
+    height: 9vmax;
+    max-width: 16vmin;
+    max-height: 16vmin;
     cursor: pointer;
 }
 
 @media (orientation: portrait) {
+    #game .container {
+        grid-template:
+            'a b'
+            'd d'
+            'c c'
+        ;
+        grid-template-columns: max-content auto;
+    }
     #board {
         grid-auto-flow: column;
         grid-template-rows: repeat(9, auto);
         direction: rtl;
-    }
-    #board div {
-        position: relative;
-        width: 9vh;
-        height: 9vh;
-        max-width: 16vw;
-        max-height: 16vw;
     }
 }
 
@@ -252,6 +286,7 @@ body {
 }
 
 #result {
+    background: rgba(0, 0, 0, 128);
     background: #00000080;
     position: absolute;
     left: 0;
@@ -267,7 +302,7 @@ body {
     transform: translate(-5%, -10%);
 }
 
-#record {
+#newrecord {
     position: absolute;
     width: 54%;
     left: 42%;
