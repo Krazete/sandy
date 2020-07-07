@@ -1,7 +1,8 @@
 /* Elements */
 
-var banner, start;
-var game, countdown, shuffle, board, pathmap;
+var dynamicStyle;
+var game, shuffle, board, pathmap, countdown;
+var banner, sandy, ai, start;
 var result, newrecord, victory, again;
 
 /* Data */
@@ -152,6 +153,7 @@ function selectTile(e) {
 
 var currentBoard;
 var time0;
+var timerID;
 
 function formatTime(time) {
     var ms = parseInt(time / 10) % 100;
@@ -162,10 +164,16 @@ function formatTime(time) {
 
 function timer() {
     time.innerHTML = formatTime(Date.now() - time0);
-    requestAnimationFrame(timer);
+    timerID = requestAnimationFrame(timer);
+}
+
+function stopTimer() {
+    cancelAnimationFrame(timerID);
 }
 
 /* Start Game */
+
+var best;
 
 function startGame() {
     game.classList.remove("idle");
@@ -175,17 +183,27 @@ function startGame() {
     }
     banner.classList.add("hidden");
     result.classList.add("hidden");
+    dynamicStyle.innerHTML = `
+    #board {
+        grid-template-columns: repeat(${currentBoard.width}, auto);
+    }
+    @media (orientation: portrait) {
+        #board {
+            grid-template-rows: repeat(${currentBoard.width}, auto);
+        }
+    }`;
 
-    // currentBoard = new Board("vtile", 20);
-    record.innerHTML = "0'00'00";
-    time.innerHTML = "0'00'00";
-    currentBoard = new Board("tile", 18);
+    best = parseInt(localStorage.getItem(currentBoard.key)) || 0;
+    record.innerHTML = formatTime(best);
+    time.innerHTML = formatTime(0);
+
     shuffleTiles();
     setTimeout(reallyStart, 4000);
 }
 
 function reallyStart() {
     time0 = Date.now();
+    timer();
     countdown.classList.add("hidden");
     for (var i = 0; i < 4; i++) {
         countdown.children[i].classList.remove("tick" + i);
@@ -195,6 +213,7 @@ function reallyStart() {
 /* End Game */
 
 function endGame() {
+    stopTimer();
     game.classList.add("idle");
     result.classList.remove("hidden");
 }
@@ -220,15 +239,19 @@ function restartGame() {
 /* Initialize Listeners */
 
 function init() {
+    dynamicStyle = document.getElementById("dynamic-style");
+
     game = document.getElementById("game");
-    countdown = document.getElementById("countdown");
     record = document.getElementById("record");
     time = document.getElementById("time");
     shuffle = document.getElementById("shuffle");
     board = document.getElementById("board");
     pathmap = document.getElementById("pathmap");
+    countdown = document.getElementById("countdown");
 
     banner = document.getElementById("banner");
+    sandy = document.getElementById("sandy");
+    ai = document.getElementById("ai");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
@@ -236,12 +259,12 @@ function init() {
     victory = document.getElementById("victory");
     again = document.getElementById("again");
 
+    currentBoard = new Board("tile", 18);
+
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", selectTile);
     start.addEventListener("click", startGame);
     again.addEventListener("click", restartGame);
-
-    timer();
 }
 
 window.addEventListener("DOMContentLoaded", init);

@@ -1,10 +1,10 @@
 var boards = {};
 
-function getDimensions(n) { /* get nonlinear factors of 2n with a ratio wider than 16:9 */
+function getDimensions(n) { /* get nonlinear factors of 2n with a ratio wider than 4:3 */
     var i, j, w, h;
     for (i = 2; i < 2 * n; i++) {
         j = 2 * n / i;
-        if (16 * i >= 9 * j) {
+        if (4 * i >= 3 * j) {
             break;
         }
         if (j == Math.floor(j)) {
@@ -14,6 +14,8 @@ function getDimensions(n) { /* get nonlinear factors of 2n with a ratio wider th
     }
     return [w, h];
 }
+
+
 
 function Board(root, n) {
     if (root in boards) {
@@ -26,6 +28,7 @@ function Board(root, n) {
         return;
     }
 
+    this.key = root;
     this.length = n;
     this.width = dimensions[0];
     this.height = dimensions[1];

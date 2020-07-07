@@ -194,7 +194,6 @@ body {
     position: relative;
     display: grid;
     grid-area: d;
-    grid-template-columns: repeat(9, auto);
     border: 1px solid white;
     border-radius: 2vh;
     margin: auto;
@@ -220,7 +219,6 @@ body {
     }
     #board {
         grid-auto-flow: column;
-        grid-template-rows: repeat(9, auto);
         direction: rtl;
     }
 }
