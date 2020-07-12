@@ -2,18 +2,19 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width,user-scalable=no">
+    <title>Sparkling Battle Star!</title>
     <link rel="stylesheet" href="index.css">
+    <style id="dynamic-style"></style>
     <script src="x.js"></script>
     <script src="index.js"></script>
-    <style id="dynamic-style"></style>
 </head>
 <body>
     <div id="game" class="card idle">
         <div class="container">
             <img id="recordtimelabel" src="img/time.png">
             <div id="recordtime">
-                <div id="record"></div>
-                <div id="time"></div>
+                <div id="record" class="txt">00'00'00</div>
+                <div id="time" class="txt">00'00'00</div>
             </div>
             <img id="shuffle" src="img/shuffle.png">
             <div id="board"></div>
@@ -33,7 +34,7 @@
         <div class="container">
             <img id="banner-bg" src="img/banner.png">
             <img id="sandy" src="img/sandy.png">
-            <!-- <img id="ai" src="img/ai.png"> -->
+            <img id="ai" src="img/ai.png">
             <img id="mic" src="img/mic.png">
             <div id="rules">
                 Clear the board by drawing a line to connect identical character tiles.
@@ -50,6 +51,8 @@
             <img id="result-bg" src="img/result.png">
             <img id="newrecord" src="img/record.png">
             <img id="victory" src="img/victory.png">
+            <div id="time2" class="txt">00'00'00</div>
+            <div id="earned" class="txt">0</div>
             <img id="again" src="img/again.png">
         </div>
     </div>

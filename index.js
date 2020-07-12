@@ -21,10 +21,10 @@ function updateBoard() {
         var tile = tiles[ids[i]];
         board.appendChild(tile);
         if (empty[i]) {
-            tile.classList.add("hidden");
+            tile.classList.add("invisible");
         }
         else {
-            tile.classList.remove("hidden");
+            tile.classList.remove("invisible");
         }
     }
 }
@@ -152,28 +152,33 @@ function selectTile(e) {
 /* * */
 
 var currentBoard;
-var time0;
+var timeRecord, timeStart, timeEnd;
 var timerID;
 
 function formatTime(time) {
-    var ms = parseInt(time / 10) % 100;
-    var s = parseInt(time / 1000) % 60;
     var m = parseInt(time / 60000);
-    return m + "'" + s.toString().padStart(2, "0") + "'" + ms.toString().padStart(2, "0");
+    var s = parseInt(time / 1000) % 60;
+    var c = parseInt(time / 10) % 100;
+
+    function formatTimeSegment(t) {
+        return t.toString().padStart(2, "0");
+    }
+
+    return [m, s, c].map(formatTimeSegment).join("'");
 }
 
-function timer() {
-    time.innerHTML = formatTime(Date.now() - time0);
-    timerID = requestAnimationFrame(timer);
+function startTimer() {
+    timeEnd = Date.now();
+    time.innerHTML = formatTime(timeEnd - timeStart);
+    timerID = requestAnimationFrame(startTimer);
 }
 
 function stopTimer() {
+    time.innerHTML = formatTime(timeEnd - timeStart);
     cancelAnimationFrame(timerID);
 }
 
 /* Start Game */
-
-var best;
 
 function startGame() {
     game.classList.remove("idle");
@@ -193,8 +198,8 @@ function startGame() {
         }
     }`;
 
-    best = parseInt(localStorage.getItem(currentBoard.key)) || 0;
-    record.innerHTML = formatTime(best);
+    timeRecord = parseInt(localStorage.getItem(currentBoard.key)) || 0;
+    record.innerHTML = formatTime(timeRecord);
     time.innerHTML = formatTime(0);
 
     shuffleTiles();
@@ -202,8 +207,8 @@ function startGame() {
 }
 
 function reallyStart() {
-    time0 = Date.now();
-    timer();
+    timeStart = Date.now();
+    startTimer();
     countdown.classList.add("hidden");
     for (var i = 0; i < 4; i++) {
         countdown.children[i].classList.remove("tick" + i);
