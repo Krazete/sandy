@@ -95,7 +95,7 @@ body {
     top: 69%;
     transform: rotate(-8deg);
     color: white;
-    font-size: 1.5vw;
+    font-family: 'Trebuchet MS', sans-serif;
     display: block;
     overflow: scroll;
 }
@@ -150,11 +150,11 @@ body {
 @keyframes vwoom {
     0% {
         opacity: 0;
-        height: 80vh;
+        height: 80vmin;
     }
     100% {
         opacity: 1;
-        height: 20vh;
+        height: 20vmin;
     }
 }
 
@@ -181,7 +181,7 @@ body {
 
 .txt {
     color: #5b5973;
-    font-family: Impact;
+    font-family: 'Impact', sans-serif;
     font-size: 4vmin;
 }
 
@@ -198,7 +198,7 @@ body {
     display: grid;
     grid-area: d;
     border: 1px solid white;
-    border-radius: 2vh;
+    border-radius: 2vmin;
     margin: auto;
 }
 
@@ -235,7 +235,6 @@ body {
     bottom: 0;
     margin: auto;
     /* todo: below is temporary */
-    /* filter: blur(2vh); */
     /* clip: rect(0, 14.4vh, 14.4vh, 0); */
 }
 
@@ -283,7 +282,7 @@ body {
 /* End Card */
 
 .idle {
-    filter: blur(1vh);
+    filter: blur(1vmin);
 }
 
 #result {

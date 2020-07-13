@@ -181,13 +181,6 @@ function stopTimer() {
 /* Start Game */
 
 function startGame() {
-    game.classList.remove("idle");
-    countdown.classList.remove("hidden");
-    for (var i = 0; i < 4; i++) {
-        countdown.children[i].classList.add("tick" + i);
-    }
-    banner.classList.add("hidden");
-    result.classList.add("hidden");
     dynamicStyle.innerHTML = `
     #board {
         grid-template-columns: repeat(${currentBoard.width}, auto);
@@ -197,6 +190,13 @@ function startGame() {
             grid-template-rows: repeat(${currentBoard.width}, auto);
         }
     }`;
+    game.classList.remove("idle");
+    countdown.classList.remove("hidden");
+    for (var i = 0; i < 4; i++) {
+        countdown.children[i].classList.add("tick" + i);
+    }
+    banner.classList.add("hidden");
+    result.classList.add("hidden");
 
     timeRecord = parseInt(localStorage.getItem(currentBoard.key)) || 0;
     record.innerHTML = formatTime(timeRecord);
