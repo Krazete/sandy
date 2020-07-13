@@ -41,6 +41,7 @@ body {
     transform: translateY(-50%);
     transform-style: preserve-3d;
     margin: auto;
+    overflow: hidden;
 }
 
 /* Banner */
