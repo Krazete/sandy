@@ -299,10 +299,6 @@ function init() {
     board.addEventListener("click", selectTile);
     start.addEventListener("click", startGame);
     again.addEventListener("click", startGame);
-
-    if (history.scrollRestoration) { /* fix overflow from #sandy and #ai */
-        history.scrollRestoration = "manual";
-    }
 }
 
 window.addEventListener("DOMContentLoaded", init);
