@@ -41,7 +41,6 @@ body {
     transform: translateY(-50%);
     transform-style: preserve-3d;
     margin: auto;
-    overflow: hidden;
 }
 
 /* Banner */
@@ -71,9 +70,9 @@ body {
 
 #ai {
     position: absolute;
-    width: 85%;
-    left: -30%;
-    top: -21%;
+    width: 75%;
+    left: -25%;
+    top: -9%;
     opacity: 0;
     transition: .5s opacity;
 }
@@ -88,6 +87,15 @@ body {
     top: 78%;
 }
 
+#modechanger {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
 #rules {
     position: absolute;
     width: 38%;
@@ -97,6 +105,7 @@ body {
     transform: rotate(-8deg);
     color: white;
     font-family: 'Trebuchet MS', sans-serif;
+    text-shadow: 0 0 5px black;
     display: block;
     overflow: scroll;
 }

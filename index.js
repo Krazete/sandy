@@ -1,9 +1,9 @@
 /* Elements */
 
 var dynamicStyle;
-var game, shuffle, board, pathmap, countdown;
+var game, record, time, shuffle, board, pathmap, countdown;
 var banner, sandy, ai, start;
-var result, newrecord, victory, again;
+var result, newrecord, victory, time2, again;
 
 /* Data */
 
@@ -13,6 +13,15 @@ var pid;
 var matches = 0;
 
 var w, h, n;
+
+var currentBoard;
+
+var timer = {
+    "id": 0,
+    "record": 0,
+    "start": 0,
+    "end": 0
+};
 
 /* Initialize Board */
 
@@ -149,11 +158,7 @@ function selectTile(e) {
     }
 }
 
-/* * */
-
-var currentBoard;
-var timeRecord, timeStart, timeEnd;
-var timerID;
+/* Timer */
 
 function formatTime(time) {
     var m = parseInt(time / 60000);
@@ -168,14 +173,33 @@ function formatTime(time) {
 }
 
 function startTimer() {
-    timeEnd = Date.now();
-    time.innerHTML = formatTime(timeEnd - timeStart);
-    timerID = requestAnimationFrame(startTimer);
+    timer.start = Date.now();
+    updateTimer();
+}
+
+function updateTimer() {
+    timer.end = Date.now();
+    time.innerHTML = formatTime(timer.end - timer.start);
+    timer.id = requestAnimationFrame(updateTimer);
 }
 
 function stopTimer() {
-    time.innerHTML = formatTime(timeEnd - timeStart);
-    cancelAnimationFrame(timerID);
+    time.innerHTML = formatTime(timer.end - timer.start);
+    cancelAnimationFrame(timer.id);
+}
+
+function enableShuffle() {
+    shuffle.classList.remove("disabled");
+}
+
+function shuffleTiles() {
+    shuffle.classList.add("disabled");
+    setTimeout(enableShuffle, 4000);
+
+    currentBoard.shuffle();
+    for (var i = 0; i < currentBoard.orderset.length; i++) {
+        board.appendChild(currentBoard.tileset[currentBoard.orderset[i]]);
+    }
 }
 
 /* Start Game */
@@ -198,50 +222,51 @@ function startGame() {
     banner.classList.add("hidden");
     result.classList.add("hidden");
 
-    timeRecord = parseInt(localStorage.getItem(currentBoard.key)) || 0;
-    record.innerHTML = formatTime(timeRecord);
+    timer.record = parseInt(localStorage.getItem(currentBoard.key)) || 0;
+    record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
     shuffleTiles();
-    setTimeout(reallyStart, 4000);
+    setTimeout(startGameplay, 4000);
 }
 
-function reallyStart() {
-    timeStart = Date.now();
-    startTimer();
+function startGameplay() {
     countdown.classList.add("hidden");
     for (var i = 0; i < 4; i++) {
         countdown.children[i].classList.remove("tick" + i);
     }
+
+    startTimer();
 }
 
 /* End Game */
 
 function endGame() {
-    stopTimer();
     game.classList.add("idle");
     result.classList.remove("hidden");
+
+    stopTimer();
 }
 
-function shuffleTiles() {
-    currentBoard.shuffle();
-    for (var i = 0; i < currentBoard.orderset.length; i++) {
-        board.appendChild(currentBoard.tileset[currentBoard.orderset[i]]);
+/* Mode */
+
+function changeMode() {
+    if (currentBoard.key == "tile") {
+        banner.classList.remove("sandy");
+        banner.classList.add("ai");
+        currentBoard = new Board("vtile", 20);
+    }
+    else if (currentBoard.key == "vtile") {
+        banner.classList.add("sandy");
+        banner.classList.remove("ai");
+        currentBoard = new Board("tile", 18);
+    }
+    else {
+        console.log("idk what happened");
     }
 }
 
-/* Restart Game */
-
-function restartGame() {
-    for (var i = 0; i < 4; i++) {
-        countdown.children[i].classList.remove("tick" + i);
-    }
-    countdown.classList.remove("hidden");
-
-    startGame();
-}
-
-/* Initialize Listeners */
+/* Initialize */
 
 function init() {
     dynamicStyle = document.getElementById("dynamic-style");
@@ -257,19 +282,27 @@ function init() {
     banner = document.getElementById("banner");
     sandy = document.getElementById("sandy");
     ai = document.getElementById("ai");
+    modechanger = document.getElementById("modechanger");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
     newrecord = document.getElementById("record");
     victory = document.getElementById("victory");
+    time2 = document.getElementById("time2");
     again = document.getElementById("again");
 
+    // window.addEventListener("load", e=>banner.classList.add("sandy"));
     currentBoard = new Board("tile", 18);
 
+    modechanger.addEventListener("click", changeMode);
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", selectTile);
     start.addEventListener("click", startGame);
-    again.addEventListener("click", restartGame);
+    again.addEventListener("click", startGame);
+
+    if (history.scrollRestoration) { /* fix overflow from #sandy and #ai */
+        history.scrollRestoration = "manual";
+    }
 }
 
 window.addEventListener("DOMContentLoaded", init);
