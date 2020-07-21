@@ -278,8 +278,6 @@ function init() {
     countdown = document.getElementById("countdown");
 
     banner = document.getElementById("banner");
-    sandy = document.getElementById("sandy");
-    ai = document.getElementById("ai");
     modechanger = document.getElementById("modechanger");
     start = document.getElementById("start");
 
@@ -291,9 +289,10 @@ function init() {
 
     currentBoard = new Board("tile", 18);
 
-    modechanger.addEventListener("click", changeMode);
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", selectTile);
+
+    modechanger.addEventListener("click", changeMode);
     start.addEventListener("click", startGame);
     again.addEventListener("click", startGame);
 }
