@@ -251,18 +251,16 @@ function endGame() {
 /* Mode */
 
 function changeMode() {
-    if (currentBoard.key == "tile") {
+    // if (currentBoard.key == "tile") {
+    if (banner.classList.contains("sandy")) {
         banner.classList.remove("sandy");
         banner.classList.add("ai");
         currentBoard = new Board("vtile", 20);
     }
-    else if (currentBoard.key == "vtile") {
+    else {
         banner.classList.add("sandy");
         banner.classList.remove("ai");
         currentBoard = new Board("tile", 18);
-    }
-    else {
-        console.log("idk what happened");
     }
 }
 
@@ -291,7 +289,6 @@ function init() {
     time2 = document.getElementById("time2");
     again = document.getElementById("again");
 
-    // window.addEventListener("load", e=>banner.classList.add("sandy"));
     currentBoard = new Board("tile", 18);
 
     modechanger.addEventListener("click", changeMode);

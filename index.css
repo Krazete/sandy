@@ -31,6 +31,7 @@ body {
     right: 0;
     top: 0;
     bottom: 0;
+    overflow: hidden;
 }
 
 .container {
@@ -40,7 +41,6 @@ body {
     transform: translateY(-50%);
     transform-style: preserve-3d;
     margin: auto;
-    overflow: hidden;
 }
 
 /* Banner */
@@ -53,33 +53,23 @@ body {
 #banner-bg {
     max-width: 100vw;
     max-height: 100vh;
-}
-
-#collected {
-    position: absolute;
-    width: 7%;
-    left: 37%;
-    top: 78%;
+    display: block;
 }
 
 #mic {
     position: absolute;
     width: 7%;
     left: 37%;
-    top: 78%;
+    top: 79%;
 }
 
 #sandy {
     position: absolute;
-    width: 85%;
-    left: -22.3%;
-    top: -17.6%;
-    transform: rotate(-2deg);
-    opacity: 0;
-    transition: .5s opacity;
-}
-.sandy #sandy {
-    opacity: 1;
+    width: 85.2%;
+    left: -22.4%;
+    top: -18%;
+    transform: rotate(-1.9deg);
+    display: none;
 }
 
 #ai {
@@ -87,11 +77,12 @@ body {
     width: 75%;
     left: -25%;
     top: -9%;
-    opacity: 0;
-    transition: .5s opacity;
+    display: none;
 }
-.ai #ai {
-    opacity: 1;
+
+.sandy #sandy, .ai #ai {
+    filter: drop-shadow(0 0 1vmin black);
+    display: initial;
 }
 
 #modechanger {
@@ -107,21 +98,21 @@ body {
     position: absolute;
     width: 38%;
     height: 19%;
-    left: 46%;
-    top: 69%;
+    left: 45%;
+    top: 70%;
     transform: rotate(-8deg);
     color: white;
     font-family: 'Trebuchet MS', sans-serif;
     text-shadow: 0 0 5px black;
     display: block;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #start {
     position: absolute;
     width: 22%;
     left: 80.4%;
-    top: 61%;
+    top: 61.2%;
     transform: rotate(-8deg);
     cursor: pointer;
 }
@@ -317,6 +308,7 @@ body {
     max-width: 75vw;
     max-height: 75vh;
     transform: translate(-5%, -10%);
+    display: block;
 }
 
 #newrecord {
