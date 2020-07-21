@@ -63,28 +63,49 @@ body {
     top: 79%;
 }
 
-#sandy {
+img.sandy, img.ai {
     position: absolute;
+    display: none;
+}
+
+#banner img.sandy {
     width: 85.2%;
     left: -22.4%;
     top: -18%;
     transform: rotate(-1.9deg);
-    display: none;
+    mix-blend-mode: darken;
 }
 
-#ai {
-    position: absolute;
+#banner img.ai {
     width: 75%;
     left: -25%;
     top: -9%;
-    display: none;
 }
 
-.sandy #sandy, .ai #ai {
+#result img.sandy {
+    width: 93.6%;
+    left: -19%;
+    top: -13.4%;
+    mix-blend-mode: lighten;
+    filter: drop-shadow(-2vmin 2vmin 0px #0003);
+}
+
+#result img.ai {
+    width: 90%;
+    left: -26%;
+    top: -9%;
+    filter: drop-shadow(-2vmin 2vmin 0px #0003);
+}
+
+.sandy #result-bg, .ai #result-bg {
+    -webkit-mask-image: linear-gradient(135deg, transparent 50%, black 60%);
+}
+
+.sandy img.sandy, .ai img.ai {
     display: initial;
 }
 
-#modechanger {
+.modechanger {
     position: absolute;
     width: 50%;
     height: 100%;

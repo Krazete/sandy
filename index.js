@@ -2,7 +2,7 @@
 
 var dynamicStyle;
 var game, record, time, shuffle, board, pathmap, countdown;
-var banner, sandy, ai, start;
+var banner, start;
 var result, newrecord, victory, time2, again;
 
 /* Data */
@@ -252,14 +252,14 @@ function endGame() {
 
 function changeMode() {
     // if (currentBoard.key == "tile") {
-    if (banner.classList.contains("sandy")) {
-        banner.classList.remove("sandy");
-        banner.classList.add("ai");
+    if (document.body.classList.contains("sandy")) {
+        document.body.classList.remove("sandy");
+        document.body.classList.add("ai");
         currentBoard = new Board("vtile", 20);
     }
     else {
-        banner.classList.add("sandy");
-        banner.classList.remove("ai");
+        document.body.classList.add("sandy");
+        document.body.classList.remove("ai");
         currentBoard = new Board("tile", 18);
     }
 }
@@ -278,7 +278,7 @@ function init() {
     countdown = document.getElementById("countdown");
 
     banner = document.getElementById("banner");
-    modechanger = document.getElementById("modechanger");
+    modechangers = document.getElementsByClassName("modechanger");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
@@ -290,9 +290,12 @@ function init() {
     currentBoard = new Board("tile", 18);
 
     shuffle.addEventListener("click", shuffleTiles);
-    board.addEventListener("click", selectTile);
+    board.addEventListener("click", endGame);
 
-    modechanger.addEventListener("click", changeMode);
+    for (var i = 0; i < modechangers.length; i++) {
+        modechangers[i].addEventListener("click", changeMode);
+    }
+
     start.addEventListener("click", startGame);
     again.addEventListener("click", startGame);
 }
