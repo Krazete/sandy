@@ -163,10 +163,6 @@ function selectTile(e) {
 /* Timer */
 
 function formatTime(time) {
-    if (time < 0) {
-        return "99'99'99";
-    }
-
     var m = parseInt(time / 60000);
     var s = parseInt(time / 1000) % 60;
     var c = parseInt(time / 10) % 100;
@@ -229,7 +225,7 @@ function startGame() {
     result.classList.add("hidden");
 
     timer.key = currentBoard.key;
-    timer.record = parseInt(localStorage.getItem(timer.key)) || -1;
+    timer.record = parseInt(localStorage.getItem(timer.key)) || 0;
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
@@ -248,6 +244,25 @@ function startGameplay() {
 
 /* End Game */
 
+function updateResults() {
+    if (currentBoard.key == timer.key) {
+        if (timer.current == timer.record) {
+            newrecord.classList.remove("hidden");
+            victory.classList.add("hidden");
+        }
+        else {
+            newrecord.classList.add("hidden");
+            victory.classList.remove("hidden");
+        }
+        time2.innerHTML = formatTime(timer.current);
+    }
+    else {
+        newrecord.classList.add("hidden");
+        victory.classList.add("hidden");
+        time2.innerHTML = formatTime(0);
+    }
+}
+
 function endGame() {
     game.classList.add("idle");
     result.classList.remove("hidden");
@@ -255,18 +270,11 @@ function endGame() {
     stopTimer();
 
     timer.current = timer.end - timer.start;
-    if (timer.current < timer.record) {
-        newrecord.classList.remove("hidden");
-        victory.classList.add("hidden");
-
+    if (timer.current < timer.record || timer.record <= 0) {
         localStorage.setItem(timer.key, timer.current);
         timer.record = timer.current;
     }
-    else {
-        newrecord.classList.add("hidden");
-        victory.classList.remove("hidden");
-    }
-    time2.innerHTML = formatTime(timer.current);
+    updateResults();
 }
 
 /* Mode */
@@ -282,12 +290,7 @@ function changeMode() {
         document.body.classList.remove("ai");
         currentBoard = new Board("tile", 18);
     }
-    if (currentBoard.key == timer.key) {
-        time2.innerHTML = formatTime(timer.current);
-    }
-    else {
-        time2.innerHTML = formatTime(-1);
-    }
+    updateResults();
 }
 
 /* Initialize */
