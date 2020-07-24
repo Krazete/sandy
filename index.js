@@ -307,10 +307,11 @@ function init() {
     countdown = document.getElementById("countdown");
 
     banner = document.getElementById("banner");
-    modechangers = document.getElementsByClassName("modechanger");
+    modechanger = document.getElementById("modechanger");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
+    modechanger2 = document.getElementById("modechanger2");
     newrecord = document.getElementById("newrecord");
     victory = document.getElementById("victory");
     time2 = document.getElementById("time2");
@@ -320,12 +321,9 @@ function init() {
 
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", endGame);
-
-    for (var i = 0; i < modechangers.length; i++) {
-        modechangers[i].addEventListener("click", changeMode);
-    }
-
+    modechanger.addEventListener("click", changeMode);
     start.addEventListener("click", startGame);
+    modechanger2.addEventListener("click", changeMode);
     again.addEventListener("click", startGame);
 }
 
