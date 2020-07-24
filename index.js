@@ -18,7 +18,9 @@ var currentBoard;
 
 var timer = {
     "id": 0,
+    "key": "",
     "record": 0,
+    "current": 0,
     "start": 0,
     "end": 0
 };
@@ -161,6 +163,10 @@ function selectTile(e) {
 /* Timer */
 
 function formatTime(time) {
+    if (time < 0) {
+        return "99'99'99";
+    }
+
     var m = parseInt(time / 60000);
     var s = parseInt(time / 1000) % 60;
     var c = parseInt(time / 10) % 100;
@@ -222,7 +228,8 @@ function startGame() {
     banner.classList.add("hidden");
     result.classList.add("hidden");
 
-    timer.record = parseInt(localStorage.getItem(currentBoard.key)) || 0;
+    timer.key = currentBoard.key;
+    timer.record = parseInt(localStorage.getItem(timer.key)) || -1;
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
@@ -246,12 +253,25 @@ function endGame() {
     result.classList.remove("hidden");
 
     stopTimer();
+
+    timer.current = timer.end - timer.start;
+    if (timer.current < timer.record) {
+        newrecord.classList.remove("hidden");
+        victory.classList.add("hidden");
+
+        localStorage.setItem(timer.key, timer.current);
+        timer.record = timer.current;
+    }
+    else {
+        newrecord.classList.add("hidden");
+        victory.classList.remove("hidden");
+    }
+    time2.innerHTML = formatTime(timer.current);
 }
 
 /* Mode */
 
 function changeMode() {
-    // if (currentBoard.key == "tile") {
     if (document.body.classList.contains("sandy")) {
         document.body.classList.remove("sandy");
         document.body.classList.add("ai");
@@ -261,6 +281,12 @@ function changeMode() {
         document.body.classList.add("sandy");
         document.body.classList.remove("ai");
         currentBoard = new Board("tile", 18);
+    }
+    if (currentBoard.key == timer.key) {
+        time2.innerHTML = formatTime(timer.current);
+    }
+    else {
+        time2.innerHTML = formatTime(-1);
     }
 }
 
@@ -282,7 +308,7 @@ function init() {
     start = document.getElementById("start");
 
     result = document.getElementById("result");
-    newrecord = document.getElementById("record");
+    newrecord = document.getElementById("newrecord");
     victory = document.getElementById("victory");
     time2 = document.getElementById("time2");
     again = document.getElementById("again");

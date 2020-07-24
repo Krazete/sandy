@@ -21,6 +21,7 @@ body {
 }
 
 .disabled {
+    -webkit-filter: brightness(0.5);
     filter: brightness(0.5);
     pointer-events: none;
 }
@@ -47,7 +48,7 @@ body {
 
 #banner {
     background: rgba(0, 0, 0, 128);
-    background-color: #00000080;
+    background: #00000080;
 }
 
 #banner-bg {
@@ -87,6 +88,7 @@ img.sandy, img.ai {
     left: -19%;
     top: -13.4%;
     mix-blend-mode: lighten;
+    -webkit-filter: drop-shadow(-2vmin 2vmin 0px #0003);
     filter: drop-shadow(-2vmin 2vmin 0px #0003);
 }
 
@@ -94,11 +96,17 @@ img.sandy, img.ai {
     width: 90%;
     left: -26%;
     top: -9%;
+    -webkit-filter: drop-shadow(-2vmin 2vmin 0px #0003);
     filter: drop-shadow(-2vmin 2vmin 0px #0003);
 }
 
+.sandy #banner-bg, .ai #banner-bg {
+    -webkit-mask-image: linear-gradient(104deg, transparent 30%, black 50%);
+    mask-image: linear-gradient(104deg, transparent 30%, black 50%);
+}
 .sandy #result-bg, .ai #result-bg {
     -webkit-mask-image: linear-gradient(135deg, transparent 50%, black 60%);
+    mask-image: linear-gradient(135deg, transparent 50%, black 60%);
 }
 
 .sandy img.sandy, .ai img.ai {
@@ -209,7 +217,7 @@ img.sandy, img.ai {
 
 .txt {
     color: #5b5973;
-    font-family: 'Impact', sans-serif;
+    font-family: 'Impact', 'Rockwell', sans-serif;
     font-size: 4vmin;
 }
 
@@ -303,13 +311,15 @@ img.sandy, img.ai {
     width: 100%;
     height: 100%;
     top: 0;
-    filter: drop-shadow(0 0 3px #fec75c); /* check caniuse for compatibility */
+    -webkit-filter: drop-shadow(0 0 3px #fec75c);
+    filter: drop-shadow(0 0 3px #fec75c);
     pointer-events: none;
 }
 
 /* End Card */
 
 .idle {
+    -webkit-filter: blur(1vmin);
     filter: blur(1vmin);
 }
 
