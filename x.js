@@ -1,10 +1,10 @@
 var boards = {};
 
-function getDimensions(n) { /* get nonlinear factors of 2n with a ratio wider than 4:3 */
+function getDimensions(n) { /* get nonlinear factors of 2n */
     var i, j, w, h;
     for (i = 2; i < 2 * n; i++) {
         j = 2 * n / i;
-        if (4 * i >= 3 * j) {
+        if (i >= j) { /* ratio wider than 1:1 */
             break;
         }
         if (j == Math.floor(j)) {

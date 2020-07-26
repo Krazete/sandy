@@ -56,6 +56,10 @@ body {
     max-height: 100vh;
     display: block;
 }
+.moded #banner-bg {
+    -webkit-mask-image: linear-gradient(104deg, transparent 30%, black 50%);
+    mask-image: linear-gradient(104deg, transparent 30%, black 50%);
+}
 
 #mic {
     position: absolute;
@@ -64,53 +68,13 @@ body {
     top: 79%;
 }
 
-img.sandy, img.ai {
+#mascot, #mascot2 {
     position: absolute;
-    display: none;
+    transition: .1s all;
 }
-
-#banner img.sandy {
-    width: 85.2%;
-    left: -22.4%;
-    top: -18%;
-    transform: rotate(-1.9deg);
-    mix-blend-mode: darken;
-}
-
-#banner img.ai {
-    width: 75%;
-    left: -25%;
-    top: -9%;
-}
-
-#result img.sandy {
-    width: 93.6%;
-    left: -19%;
-    top: -13.4%;
-    mix-blend-mode: lighten;
+#mascot2 {
     -webkit-filter: drop-shadow(-2vmin 2vmin 0px #0003);
     filter: drop-shadow(-2vmin 2vmin 0px #0003);
-}
-
-#result img.ai {
-    width: 90%;
-    left: -26%;
-    top: -9%;
-    -webkit-filter: drop-shadow(-2vmin 2vmin 0px #0003);
-    filter: drop-shadow(-2vmin 2vmin 0px #0003);
-}
-
-.sandy #banner-bg, .ai #banner-bg {
-    -webkit-mask-image: linear-gradient(104deg, transparent 30%, black 50%);
-    mask-image: linear-gradient(104deg, transparent 30%, black 50%);
-}
-.sandy #result-bg, .ai #result-bg {
-    -webkit-mask-image: linear-gradient(135deg, transparent 50%, black 60%);
-    mask-image: linear-gradient(135deg, transparent 50%, black 60%);
-}
-
-.sandy img.sandy, .ai img.ai {
-    display: initial;
 }
 
 .modechanger {
@@ -240,10 +204,6 @@ img.sandy, img.ai {
 
 #board div {
     position: relative;
-    width: 9vmax;
-    height: 9vmax;
-    max-width: 16vmin;
-    max-height: 16vmin;
     cursor: pointer;
 }
 
@@ -339,6 +299,10 @@ img.sandy, img.ai {
     max-height: 75vh;
     transform: translate(-5%, -10%);
     display: block;
+}
+.moded #result-bg {
+    -webkit-mask-image: linear-gradient(135deg, transparent 50%, black 60%);
+    mask-image: linear-gradient(135deg, transparent 50%, black 60%);
 }
 
 #newrecord {

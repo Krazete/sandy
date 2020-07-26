@@ -163,6 +163,10 @@ function selectTile(e) {
 /* Timer */
 
 function formatTime(time) {
+    if (time < 0) {
+        return "\u2013\u2013'\u2013\u2013'\u2013\u2013";
+    }
+
     var m = parseInt(time / 60000);
     var s = parseInt(time / 1000) % 60;
     var c = parseInt(time / 10) % 100;
@@ -190,6 +194,8 @@ function stopTimer() {
     cancelAnimationFrame(timer.id);
 }
 
+/* Start Game */
+
 function enableShuffle() {
     shuffle.classList.remove("disabled");
 }
@@ -204,12 +210,16 @@ function shuffleTiles() {
     }
 }
 
-/* Start Game */
-
 function startGame() {
     dynamicStyle.innerHTML = `
     #board {
         grid-template-columns: repeat(${currentBoard.width}, auto);
+    }
+    #board div {
+        width: ${80/currentBoard.height}vmin;
+        height: ${80/currentBoard.height}vmin;
+        max-width: ${80/currentBoard.width}vmax;
+        max-height: ${80/currentBoard.width}vmax;
     }
     @media (orientation: portrait) {
         #board {
@@ -225,7 +235,7 @@ function startGame() {
     result.classList.add("hidden");
 
     timer.key = currentBoard.key;
-    timer.record = parseInt(localStorage.getItem(timer.key)) || 0;
+    timer.record = parseInt(localStorage.getItem(timer.key)) || -1;
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
@@ -259,7 +269,7 @@ function updateResults() {
     else {
         newrecord.classList.add("hidden");
         victory.classList.add("hidden");
-        time2.innerHTML = formatTime(0);
+        time2.innerHTML = formatTime(-1);
     }
 }
 
@@ -279,17 +289,29 @@ function endGame() {
 
 /* Mode */
 
+var mode = -1;
+
 function changeMode() {
-    if (document.body.classList.contains("sandy")) {
-        document.body.classList.remove("sandy");
-        document.body.classList.add("ai");
-        currentBoard = new Board("vtile", 20);
+    mode = (mode + 1) % modes.length;
+
+    currentBoard = new Board(modes[mode].key, modes[mode].size);
+
+    document.body.classList.add("moded");
+
+    mascot.classList.remove("hidden");
+    mascot.style = "";
+    for (var atr in modes[mode].banner) {
+        mascot.style[atr] = modes[mode].banner[atr];
     }
-    else {
-        document.body.classList.add("sandy");
-        document.body.classList.remove("ai");
-        currentBoard = new Board("tile", 18);
+    mascot.src = "img/" + modes[mode].id + ".png";
+
+    mascot2.classList.remove("hidden");
+    mascot2.style = "";
+    for (var atr in modes[mode].result) {
+        mascot2.style[atr] = modes[mode].result[atr];
     }
+    mascot2.src = "img/" + modes[mode].id + ".png";
+
     updateResults();
 }
 
@@ -307,10 +329,12 @@ function init() {
     countdown = document.getElementById("countdown");
 
     banner = document.getElementById("banner");
+    mascot = document.getElementById("mascot");
     modechanger = document.getElementById("modechanger");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
+    mascot2 = document.getElementById("mascot2");
     modechanger2 = document.getElementById("modechanger2");
     newrecord = document.getElementById("newrecord");
     victory = document.getElementById("victory");
