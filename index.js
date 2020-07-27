@@ -303,14 +303,14 @@ function changeMode() {
     for (var atr in modes[mode].banner) {
         mascot.style[atr] = modes[mode].banner[atr];
     }
-    mascot.src = "img/" + modes[mode].id + ".png";
+    mascot.src = modes[mode].key + "/0.png";
 
     mascot2.classList.remove("hidden");
     mascot2.style = "";
     for (var atr in modes[mode].result) {
         mascot2.style[atr] = modes[mode].result[atr];
     }
-    mascot2.src = "img/" + modes[mode].id + ".png";
+    mascot2.src = modes[mode].key + "/0.png";
 
     updateResults();
 }
@@ -341,7 +341,7 @@ function init() {
     time2 = document.getElementById("time2");
     again = document.getElementById("again");
 
-    currentBoard = new Board("tile", 18);
+    currentBoard = new Board(modes[0].key, modes[0].size);
 
     shuffle.addEventListener("click", shuffleTiles);
     board.addEventListener("click", endGame);

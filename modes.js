@@ -1,7 +1,6 @@
 var modes = [
     {
-        "id": "sandy",
-        "key": "tile",
+        "key": "default",
         "size": 18,
         "banner": {
             "width": "85.2%",
@@ -18,8 +17,7 @@ var modes = [
         }
     },
     {
-        "id": "ai",
-        "key": "vtile",
+        "key": "vtuber",
         "size": 20,
         "banner": {
             "width": "75%",

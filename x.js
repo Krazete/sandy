@@ -4,7 +4,7 @@ function getDimensions(n) { /* get nonlinear factors of 2n */
     var i, j, w, h;
     for (i = 2; i < 2 * n; i++) {
         j = 2 * n / i;
-        if (i >= j) { /* ratio wider than 1:1 */
+        if (i >= j) { /* must be wider than 1:1 */
             break;
         }
         if (j == Math.floor(j)) {
@@ -15,30 +15,28 @@ function getDimensions(n) { /* get nonlinear factors of 2n */
     return [w, h];
 }
 
-
-
-function Board(root, n) {
-    if (root in boards) {
-        return boards[root];
+function Board(key, size) {
+    if (key in boards) {
+        return boards[key];
     }
 
-    var dimensions = getDimensions(n);
+    var dimensions = getDimensions(size);
 
     if (typeof dimensions[0] == "undefined" || typeof dimensions[1] == "undefined") {
         return;
     }
 
-    this.key = root;
-    this.length = n;
+    this.key = key;
+    this.size = size;
     this.width = dimensions[0];
     this.height = dimensions[1];
     this.tileset = [];
     this.activeset = [];
     this.orderset = [];
 
-    for (var i = 0; i < 2 * n; i++) {
+    for (var i = 0; i < 2 * size; i++) {
         var icon = new Image();
-        icon.src = root + "/" + (i % n + 1) + ".png";
+        icon.src = key + "/" + (i % size + 1) + ".png";
 
         var tile = document.createElement("div");
         tile.dataset.i = i;
@@ -49,7 +47,7 @@ function Board(root, n) {
         this.orderset.push(i);
     }
 
-    boards[root] = this;
+    boards[key] = this;
 
     return this;
 }
@@ -152,7 +150,7 @@ function shortestPaths(paths) {
 Board.prototype.findPaths = function (p, q) {
     var paths = [];
 
-    if (this.orderset[p] + this.orderset[q] == this.length) {
+    if (this.orderset[p] + this.orderset[q] == this.size) {
         var px = p % this.width;
         var py = Math.floor(p / this.width);
         var qx = q % this.width;
