@@ -202,11 +202,6 @@ body {
     margin: auto;
 }
 
-#board div {
-    position: relative;
-    cursor: pointer;
-}
-
 @media (orientation: portrait) {
     #game .container {
         grid-template:
@@ -222,16 +217,23 @@ body {
     }
 }
 
-#board img {
+#board > div {
+    position: relative;
+    cursor: pointer;
+}
+
+#board > div div {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
     position: absolute;
     width: 90%;
+    height: 90%;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
-    /* todo: below is temporary */
-    /* clip: rect(0, 14.4vh, 14.4vh, 0); */
 }
 
 #board div:hover:after, #board div.selected:after {
@@ -245,7 +247,6 @@ body {
     height: 100%;
     display: block;
 }
-
 #board div.selected:after {
     opacity: 1;
 }

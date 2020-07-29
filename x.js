@@ -35,8 +35,8 @@ function Board(key, size) {
     this.orderset = [];
 
     for (var i = 0; i < 2 * size; i++) {
-        var icon = new Image();
-        icon.src = key + "/" + (i % size + 1) + ".png";
+        var icon = document.createElement("div");
+        icon.style.backgroundImage = "url('" + key + "/" + (i % size + 1) + ".png')";
 
         var tile = document.createElement("div");
         tile.dataset.i = i;

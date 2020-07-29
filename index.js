@@ -215,16 +215,16 @@ function startGame() {
     #board {
         grid-template-columns: repeat(${currentBoard.width}, auto);
     }
-    #board div {
-        width: ${80/currentBoard.height}vmin;
-        height: ${80/currentBoard.height}vmin;
-        max-width: ${80/currentBoard.width}vmax;
-        max-height: ${80/currentBoard.width}vmax;
-    }
     @media (orientation: portrait) {
         #board {
             grid-template-rows: repeat(${currentBoard.width}, auto);
         }
+    }
+    #board > div {
+        width: ${80/currentBoard.height}vmin;
+        height: ${80/currentBoard.height}vmin;
+        max-width: ${80/currentBoard.width}vmax;
+        max-height: ${80/currentBoard.width}vmax;
     }`;
     game.classList.remove("idle");
     countdown.classList.remove("hidden");
