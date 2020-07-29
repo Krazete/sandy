@@ -204,6 +204,7 @@ function shuffleTiles() {
     shuffle.classList.add("disabled");
     setTimeout(enableShuffle, 4000);
 
+    board.innerHTML = "";
     currentBoard.shuffle();
     for (var i = 0; i < currentBoard.orderset.length; i++) {
         board.appendChild(currentBoard.tileset[currentBoard.orderset[i]]);
