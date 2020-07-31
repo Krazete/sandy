@@ -30,9 +30,9 @@ function Board(key, size) {
     this.size = size;
     this.width = dimensions[0];
     this.height = dimensions[1];
-    this.tileset = [];
-    this.activeset = [];
-    this.orderset = [];
+    this.tileset = []; // tileset[i] has element of tile i ////////////////////todo:maybechange
+    this.activeset = []; // activeset[i] has status of position i
+    this.orderset = []; // orderset[i] has tile index of position i
 
     for (var i = 0; i < 2 * size; i++) {
         var icon = document.createElement("div");
@@ -150,7 +150,7 @@ function shortestPaths(paths) {
 Board.prototype.findPaths = function (p, q) {
     var paths = [];
 
-    if (this.orderset[p] + this.orderset[q] == this.size) {
+    if (Math.abs(this.orderset[q] - this.orderset[p]) == this.size) {
         var px = p % this.width;
         var py = Math.floor(p / this.width);
         var qx = q % this.width;
@@ -196,7 +196,15 @@ Board.prototype.select = function select(i) {
         this.selected = i;
     }
     else {
-        console.log(this.selected, i);
+        var p = this.orderset.indexOf(this.selected);
+        var q = this.orderset.indexOf(i);
+        var paths = this.findPaths(p, q);
+        if (paths.length > 0) {
+            this.activeset[p] = false;
+            this.activeset[q] = false;
+            this.tileset[this.selected].classList.add("matched");
+            this.tileset[i].classList.add("matched");
+        }
         this.selected = undefined;
     }
 };

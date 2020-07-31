@@ -40,16 +40,6 @@ function updateBoard() {
     }
 }
 
-/* Shuffle */
-
-function disableShuffle() {
-    shuffle.classList.add("disabled");
-}
-
-function enableShuffle() {
-    shuffle.classList.remove("disabled");
-}
-
 /* Draw Path */
 
 function showPath() {
@@ -98,16 +88,7 @@ var i0;
 
 function selectTile(e) {
     if ("i" in e.target.dataset) {
-        e.target.classList.add("selected");
         var i = parseInt(e.target.dataset.i);
-        if (typeof i0 == "undefined") {
-            i0 = i;
-        }
-        else {
-            i0 = undefined;
-        }
-        console.log(currentBoard.tileset[i]);
-        console.log(currentBoard.orderset.indexOf(i));
         currentBoard.select(i);
     }
 
@@ -196,12 +177,16 @@ function stopTimer() {
 
 /* Start Game */
 
+function disableShuffle() {
+    shuffle.classList.add("disabled");
+}
+
 function enableShuffle() {
     shuffle.classList.remove("disabled");
 }
 
 function shuffleTiles() {
-    shuffle.classList.add("disabled");
+    disableShuffle();
     setTimeout(enableShuffle, 4000);
 
     board.innerHTML = "";
@@ -345,7 +330,7 @@ function init() {
     currentBoard = new Board(modes[0].key, modes[0].size);
 
     shuffle.addEventListener("click", shuffleTiles);
-    board.addEventListener("click", endGame);
+    board.addEventListener("click", selectTile);
     modechanger.addEventListener("click", changeMode);
     start.addEventListener("click", startGame);
     modechanger2.addEventListener("click", changeMode);
