@@ -33,6 +33,7 @@ function Board(key, size) {
     this.tileset = []; // tileset[i] has element of tile i ////////////////////todo:maybechange
     this.activeset = []; // activeset[i] has status of position i
     this.orderset = []; // orderset[i] has tile index of position i
+    this.matched = 0;
 
     for (var i = 0; i < 2 * size; i++) {
         var icon = document.createElement("div");
@@ -190,7 +191,7 @@ Board.prototype.findPaths = function (p, q) {
     return shortestPaths(paths);
 };
 
-Board.prototype.select = function select(i) {
+Board.prototype.select = function (i) {
     this.tileset[i].classList.add("selected");
     if (typeof this.selected == "undefined") {
         this.selected = i;
@@ -204,7 +205,19 @@ Board.prototype.select = function select(i) {
             this.activeset[q] = false;
             this.tileset[this.selected].classList.add("matched");
             this.tileset[i].classList.add("matched");
+            this.matched++;
         }
         this.selected = undefined;
     }
+    return false;
+};
+
+Board.prototype.reset = function () {
+    for (var i = 0; i < 2 * this.size; i++) {
+        this.tileset[i].classList.remove("matched");
+        this.tileset[i].classList.remove("invisible");
+        this.activeset[i] = true;
+        this.orderset[i] = i;
+    }
+    this.matched = 0;
 };

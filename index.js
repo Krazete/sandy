@@ -90,6 +90,9 @@ function selectTile(e) {
     if ("i" in e.target.dataset) {
         var i = parseInt(e.target.dataset.i);
         currentBoard.select(i);
+        if (currentBoard.matched == currentBoard.size) {
+            endGame();
+        }
     }
 
     return;
@@ -225,6 +228,7 @@ function startGame() {
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
+    currentBoard.reset();
     shuffleTiles();
     setTimeout(startGameplay, 4000);
 }
