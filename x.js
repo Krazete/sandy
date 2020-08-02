@@ -147,7 +147,7 @@ function shortestPaths(paths) {
             minlength = ilength;
             shorts = [paths[i]];
         }
-        else {
+        else if (ilength == minlength) {
             shorts.push(paths[i]);
         }
     }

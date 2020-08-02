@@ -82,7 +82,7 @@ function hidePath() {
 function drawPath(path) {
     var box = board.getBoundingClientRect();
     if (box.width > box.height) {
-        var size = box.width / 9;
+        var size = box.width / currentBoard.width;
         var x = box.left + size / 2;
         var y = box.top + size / 2;
         for (var i = 0; i < 2; i++) {
@@ -95,7 +95,7 @@ function drawPath(path) {
         }
     }
     else {
-        var size = box.height / 9;
+        var size = box.height / currentBoard.width;
         var x = box.right - size / 2;
         var y = box.top + size / 2;
         for (var i = 0; i < 2; i++) {
@@ -152,7 +152,6 @@ function selectTile(e) {
         var path = currentBoard.select(i, i0);
         if (typeof path == "undefined") {
             currentBoard.tileset[i0].classList.remove("selected");
-            return;
         }
         else {
             matches++;
