@@ -30,10 +30,9 @@ function Board(key, size) {
     this.size = size;
     this.width = dimensions[0];
     this.height = dimensions[1];
-    this.tileset = []; // tileset[i] has element of tile i ////////////////////todo:maybechange
-    this.activeset = []; // activeset[i] has status of position i
-    this.orderset = []; // orderset[i] has tile index of position i
-    this.matched = 0;
+    this.tileset = []; /* tileset[i] has element of tile i */
+    this.activeset = []; /* activeset[i] has status of position i */
+    this.orderset = []; /* orderset[i] has tile index of position i */
 
     for (var i = 0; i < 2 * size; i++) {
         var icon = document.createElement("div");
@@ -52,6 +51,14 @@ function Board(key, size) {
 
     return this;
 }
+
+Board.prototype.reset = function () {
+    for (var i = 0; i < 2 * this.size; i++) {
+        /* this.tileset is never altered by Board itself */
+        this.activeset[i] = true;
+        this.orderset[i] = i;
+    }
+};
 
 Board.prototype.shuffle = function () {
     var iset = [];
@@ -191,33 +198,14 @@ Board.prototype.findPaths = function (p, q) {
     return shortestPaths(paths);
 };
 
-Board.prototype.select = function (i) {
-    this.tileset[i].classList.add("selected");
-    if (typeof this.selected == "undefined") {
-        this.selected = i;
+Board.prototype.select = function (i, j) {
+    var p = this.orderset.indexOf(i);
+    var q = this.orderset.indexOf(j);
+    var paths = this.findPaths(p, q);
+    var r = Math.floor(Math.random() * paths.length);
+    if (paths.length > 0) {
+        this.activeset[p] = false;
+        this.activeset[q] = false;
     }
-    else {
-        var p = this.orderset.indexOf(this.selected);
-        var q = this.orderset.indexOf(i);
-        var paths = this.findPaths(p, q);
-        if (paths.length > 0) {
-            this.activeset[p] = false;
-            this.activeset[q] = false;
-            this.tileset[this.selected].classList.add("matched");
-            this.tileset[i].classList.add("matched");
-            this.matched++;
-        }
-        this.selected = undefined;
-    }
-    return false;
-};
-
-Board.prototype.reset = function () {
-    for (var i = 0; i < 2 * this.size; i++) {
-        this.tileset[i].classList.remove("matched");
-        this.tileset[i].classList.remove("invisible");
-        this.activeset[i] = true;
-        this.orderset[i] = i;
-    }
-    this.matched = 0;
+    return paths[r];
 };

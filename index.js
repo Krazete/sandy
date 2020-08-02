@@ -3,18 +3,13 @@
 var dynamicStyle;
 var game, record, time, shuffle, board, pathmap, countdown;
 var banner, start;
-var result, newrecord, victory, time2, again;
+var result, newrecord, victory, time2, earned, again;
 
 /* Data */
 
-var empty = [];
-var ids = [];
-var pid;
-var matches = 0;
-
-var w, h, n;
-
 var currentBoard;
+var mode = -1;
+var matches = 0;
 
 var timer = {
     "id": 0,
@@ -24,6 +19,40 @@ var timer = {
     "start": 0,
     "end": 0
 };
+
+/* Timer */
+
+function formatTime(time) {
+    if (time < 0) {
+        return "\u2013\u2013'\u2013\u2013'\u2013\u2013";
+    }
+
+    var m = parseInt(time / 60000);
+    var s = parseInt(time / 1000) % 60;
+    var c = parseInt(time / 10) % 100;
+
+    function formatTimeSegment(t) {
+        return t.toString().padStart(2, "0");
+    }
+
+    return [m, s, c].map(formatTimeSegment).join("'");
+}
+
+function startTimer() {
+    timer.start = Date.now();
+    updateTimer();
+}
+
+function updateTimer() {
+    timer.end = Date.now();
+    time.innerHTML = formatTime(timer.end - timer.start);
+    timer.id = requestAnimationFrame(updateTimer);
+}
+
+function stopTimer() {
+    time.innerHTML = formatTime(timer.end - timer.start);
+    cancelAnimationFrame(timer.id);
+}
 
 /* Initialize Board */
 
@@ -82,103 +111,102 @@ function drawPath(path) {
     setTimeout(hidePath, 250);
 }
 
-/* Select Tile */
+/* Game Logic */
 
 var i0;
 
-function selectTile(e) {
-    if ("i" in e.target.dataset) {
-        var i = parseInt(e.target.dataset.i);
-        currentBoard.select(i);
-        if (currentBoard.matched == currentBoard.size) {
-            endGame();
-        }
-    }
-
-    return;
-
+function selectTile (i) {
+    this.tileset[i].classList.add("selected");
     if (typeof i0 == "undefined") {
         i0 = i;
     }
     else {
-        // dostuff
+        var p = this.orderset.indexOf(i0);
+        var q = this.orderset.indexOf(i);
+        var paths = this.findPaths(p, q);
+        if (paths.length > 0) {
+            this.activeset[p] = false;
+            this.activeset[q] = false;
+            this.tileset[i0].classList.add("matched");
+            this.tileset[i].classList.add("matched");
+            matches++;
+            return paths;
+        }
         i0 = undefined;
     }
+    return false;
+};
 
-    if (e.target) {
-        console.log(tile.target);
-        tile = tile.target;
+function selectTile(e) {
+    if (!("i" in e.target.dataset)) {
+        return;
     }
-    if (tile.classList.contains("tile")) {
-        var qid = parseInt(tile.id);
-        if (typeof pid == "undefined") {
-            tile.classList.add("selected");
-            pid = qid;
+
+    var i = parseInt(e.target.dataset.i);
+
+    if (typeof i0 == "undefined") {
+        currentBoard.tileset[i].classList.add("selected");
+        i0 = i;
+    }
+    else {
+        var path = currentBoard.select(i, i0);
+        if (typeof path == "undefined") {
+            currentBoard.tileset[i0].classList.remove("selected");
+            return;
         }
         else {
-            var p = ids.indexOf(pid);
-            var q = ids.indexOf(qid);
-            var paths = findPaths(p, q);
-            if (paths.length) {
-                tile.classList.add("selected");
-                tile.classList.add("matched");
-                tiles[pid].classList.add("matched");
-                trimPaths(paths);
-                drawPath(paths[Math.floor(Math.random() * paths.length)]);
-
-                empty[p] = true;
-                empty[q] = true;
-                matches++;
-                if (matches >= 18) {
-                    endGame();
-                }
+            matches++;
+            currentBoard.tileset[i].classList.add("selected");
+            currentBoard.tileset[i0].classList.add("matched");
+            currentBoard.tileset[i].classList.add("matched");
+            drawPath(path);
+            if (matches >= currentBoard.size) {
+                endGame();
             }
-            else {
-                tiles[pid].classList.remove("selected");
-            }
-            pid = undefined;
         }
-    }
-    else if (tile.id != "board") {
-        selectTile(tile.parentElement); /* bubble up */
+        i0 = undefined;
     }
 }
 
-/* Timer */
+/* Change Mode */
 
-function formatTime(time) {
-    if (time < 0) {
-        return "\u2013\u2013'\u2013\u2013'\u2013\u2013";
+function changeMode() {
+    mode = (mode + 1) % modes.length;
+
+    currentBoard = new Board(modes[mode].key, modes[mode].size);
+
+    document.body.classList.add("moded");
+
+    mascot.classList.remove("hidden");
+    mascot.style = "";
+    for (var atr in modes[mode].banner) {
+        mascot.style[atr] = modes[mode].banner[atr];
     }
+    mascot.src = modes[mode].key + "/0.png";
 
-    var m = parseInt(time / 60000);
-    var s = parseInt(time / 1000) % 60;
-    var c = parseInt(time / 10) % 100;
-
-    function formatTimeSegment(t) {
-        return t.toString().padStart(2, "0");
+    mascot2.classList.remove("hidden");
+    mascot2.style = "";
+    for (var atr in modes[mode].result) {
+        mascot2.style[atr] = modes[mode].result[atr];
     }
+    mascot2.src = modes[mode].key + "/0.png";
 
-    return [m, s, c].map(formatTimeSegment).join("'");
-}
-
-function startTimer() {
-    timer.start = Date.now();
-    updateTimer();
-}
-
-function updateTimer() {
-    timer.end = Date.now();
-    time.innerHTML = formatTime(timer.end - timer.start);
-    timer.id = requestAnimationFrame(updateTimer);
-}
-
-function stopTimer() {
-    time.innerHTML = formatTime(timer.end - timer.start);
-    cancelAnimationFrame(timer.id);
+    updateResults();
 }
 
 /* Start Game */
+
+function resetTiles() {
+    for (var i = 0; i < currentBoard.tileset.length; i++) {
+        currentBoard.tileset[i].classList.remove("selected");
+        currentBoard.tileset[i].classList.remove("matched");
+        currentBoard.tileset[i].classList.remove("hidden");
+    }
+
+    currentBoard.reset();
+
+    matches = 0;
+}
 
 function disableShuffle() {
     shuffle.classList.add("disabled");
@@ -228,7 +256,7 @@ function startGame() {
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
-    currentBoard.reset();
+    resetTiles();
     shuffleTiles();
     setTimeout(startGameplay, 4000);
 }
@@ -255,11 +283,13 @@ function updateResults() {
             victory.classList.remove("hidden");
         }
         time2.innerHTML = formatTime(timer.current);
+        earned.innerHTML = timer.current % 10;
     }
     else {
         newrecord.classList.add("hidden");
         victory.classList.add("hidden");
         time2.innerHTML = formatTime(-1);
+        earned.innerHTML = 0;
     }
 }
 
@@ -274,34 +304,6 @@ function endGame() {
         localStorage.setItem(timer.key, timer.current);
         timer.record = timer.current;
     }
-    updateResults();
-}
-
-/* Mode */
-
-var mode = -1;
-
-function changeMode() {
-    mode = (mode + 1) % modes.length;
-
-    currentBoard = new Board(modes[mode].key, modes[mode].size);
-
-    document.body.classList.add("moded");
-
-    mascot.classList.remove("hidden");
-    mascot.style = "";
-    for (var atr in modes[mode].banner) {
-        mascot.style[atr] = modes[mode].banner[atr];
-    }
-    mascot.src = modes[mode].key + "/0.png";
-
-    mascot2.classList.remove("hidden");
-    mascot2.style = "";
-    for (var atr in modes[mode].result) {
-        mascot2.style[atr] = modes[mode].result[atr];
-    }
-    mascot2.src = modes[mode].key + "/0.png";
-
     updateResults();
 }
 
@@ -329,6 +331,7 @@ function init() {
     newrecord = document.getElementById("newrecord");
     victory = document.getElementById("victory");
     time2 = document.getElementById("time2");
+    earned = document.getElementById("earned");
     again = document.getElementById("again");
 
     currentBoard = new Board(modes[0].key, modes[0].size);
