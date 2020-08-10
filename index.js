@@ -288,7 +288,7 @@ function updateResults() {
         newrecord.classList.add("hidden");
         victory.classList.add("hidden");
         time2.innerHTML = formatTime(-1);
-        earned.innerHTML = 0;
+        earned.innerHTML = "\u2013";
     }
 }
 
@@ -307,6 +307,17 @@ function endGame() {
 }
 
 /* Initialize */
+
+function preloadImages() {
+    for (var mode of modes) {
+        for (var i = 0; i <= mode.size; i++) {
+            var img = new Image();
+            img.src = mode.key + "/" + i + ".png";
+            img.className = "hidden";
+            document.body.appendChild(img);
+        }
+    }
+}
 
 function init() {
     dynamicStyle = document.getElementById("dynamic-style");
@@ -333,6 +344,7 @@ function init() {
     earned = document.getElementById("earned");
     again = document.getElementById("again");
 
+    preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
     shuffle.addEventListener("click", shuffleTiles);
