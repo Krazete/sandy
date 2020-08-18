@@ -313,8 +313,6 @@ function preloadImages() {
         for (var i = 0; i <= mode.size; i++) {
             var img = new Image();
             img.src = mode.key + "/" + i + ".png";
-            img.className = "hidden";
-            document.body.appendChild(img);
         }
     }
 }
