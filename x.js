@@ -2,7 +2,7 @@ var boards = {};
 
 function getDimensions(n) { /* get nonlinear factors of 2n */
     var i, j, w, h;
-    for (i = 2; i < 2 * n; i++) {
+    for (i = 1; i < 2 * n; i++) {
         j = 2 * n / i;
         if (i >= j) { /* must be wider than 1:1 */
             break;
@@ -14,108 +14,6 @@ function getDimensions(n) { /* get nonlinear factors of 2n */
     }
     return [w, h];
 }
-
-function Board(key, size) {
-    if (key in boards) {
-        return boards[key];
-    }
-
-    var dimensions = getDimensions(size);
-
-    if (typeof dimensions[0] == "undefined" || typeof dimensions[1] == "undefined") {
-        return;
-    }
-
-    this.key = key;
-    this.size = size;
-    this.width = dimensions[0];
-    this.height = dimensions[1];
-    this.tileset = []; /* tileset[i] has element of tile i */
-    this.activeset = []; /* activeset[i] has status of position i */
-    this.orderset = []; /* orderset[i] has tile index of position i */
-
-    for (var i = 0; i < 2 * size; i++) {
-        var icon = document.createElement("div");
-        icon.style.backgroundImage = "url('" + key + "/" + (i % size + 1) + ".png')";
-
-        var tile = document.createElement("div");
-        tile.dataset.i = i;
-        tile.appendChild(icon);
-
-        this.tileset.push(tile);
-        this.activeset.push(true);
-        this.orderset.push(i);
-    }
-
-    boards[key] = this;
-
-    return this;
-}
-
-Board.prototype.reset = function () {
-    for (var i = 0; i < 2 * this.size; i++) {
-        /* this.tileset is never altered by Board itself */
-        this.activeset[i] = true;
-        this.orderset[i] = i;
-    }
-};
-
-Board.prototype.shuffle = function () {
-    var iset = [];
-
-    for (var i = 0; i < this.activeset.length; i++) {
-        if (this.activeset[i]) {
-            iset.push(i);
-        }
-    }
-
-    for (var i = iset.length - 1; i > 0; i--) {
-        var a = iset[i];
-        var b = iset[Math.floor(Math.random() * (i + 1))];
-        var orderseta = this.orderset[a];
-        this.orderset[a] = this.orderset[b];
-        this.orderset[b] = orderseta;
-    }
-};
-
-Board.prototype.getDomain = function (x, y) {
-    var domain = [-1, this.width];
-
-    for (var i = x - 1; i > -1; i--) {
-        if (this.activeset[i + this.width * y]) {
-            domain[0] = i + 1;
-            break;
-        }
-    }
-
-    for (var i = x + 1; i < this.width; i++) {
-        if (this.activeset[i + this.width * y]) {
-            domain[1] = i - 1;
-            break;
-        }
-    }
-
-    return domain;
-};
-
-Board.prototype.getRange = function (x, y) {
-    var range = [-1, this.height];
-    for (var j = y - 1; j > -1; j--) {
-        if (this.activeset[x + this.width * j]) {
-            range[0] = j + 1;
-            break;
-        }
-    }
-
-    for (var j = y + 1; j < this.height; j++) {
-        if (this.activeset[x + this.width * j]) {
-            range[1] = j - 1;
-            break;
-        }
-    }
-
-    return range;
-};
 
 function manhattanDistance(a, b) {
     return Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
@@ -131,10 +29,6 @@ function pathLength(path) {
     }
 
     return ab + bc + cd;
-}
-
-function byLength(path1, path2) {
-    return pathLength(path1) - pathLength(path2);
 }
 
 function shortestPaths(paths) {
@@ -155,10 +49,112 @@ function shortestPaths(paths) {
     return shorts;
 }
 
+function Board(key, size) {
+    if (key in boards) {
+        return boards[key];
+    }
+
+    var dimensions = getDimensions(size);
+
+    if (typeof dimensions[0] == "undefined" || typeof dimensions[1] == "undefined") {
+        return;
+    }
+
+    this.key = key;
+    this.size = size;
+    this.width = dimensions[0];
+    this.height = dimensions[1];
+    this.tileset = []; /* tileset[i] has element of tile i */
+    this.tilemap = []; /* tilemap[i] has tile index of position i */
+    this.livemap = []; /* livemap[i] has status of position i */
+
+    for (var i = 0; i < 2 * size; i++) {
+        var icon = document.createElement("div");
+        icon.style.backgroundImage = "url('" + key + "/" + (i % size + 1) + ".png')";
+
+        var tile = document.createElement("div");
+        tile.dataset.i = i;
+        tile.appendChild(icon);
+
+        this.tileset.push(tile);
+        this.tilemap.push(i);
+        this.livemap.push(true);
+    }
+
+    boards[key] = this;
+
+    return this;
+}
+
+Board.prototype.reset = function () {
+    for (var i = 0; i < 2 * this.size; i++) {
+        /* this.tileset is never altered by Board itself */
+        this.tilemap[i] = i;
+        this.livemap[i] = true;
+    }
+};
+
+Board.prototype.shuffle = function () {
+    var iset = [];
+
+    for (var i = 0; i < this.livemap.length; i++) {
+        if (this.livemap[i]) {
+            iset.push(i);
+        }
+    }
+
+    for (var i = iset.length - 1; i > 0; i--) {
+        var a = iset[Math.floor(Math.random() * (i + 1))];
+        var b = iset[i];
+        var tilemapa = this.tilemap[a];
+        this.tilemap[a] = this.tilemap[b];
+        this.tilemap[b] = tilemapa;
+    }
+};
+
+Board.prototype.getDomain = function (x, y) {
+    var domain = [-1, this.width];
+
+    for (var i = x - 1; i > -1; i--) {
+        if (this.livemap[i + this.width * y]) {
+            domain[0] = i + 1;
+            break;
+        }
+    }
+
+    for (var i = x + 1; i < this.width; i++) {
+        if (this.livemap[i + this.width * y]) {
+            domain[1] = i - 1;
+            break;
+        }
+    }
+
+    return domain;
+};
+
+Board.prototype.getRange = function (x, y) {
+    var range = [-1, this.height];
+    for (var j = y - 1; j > -1; j--) {
+        if (this.livemap[x + this.width * j]) {
+            range[0] = j + 1;
+            break;
+        }
+    }
+
+    for (var j = y + 1; j < this.height; j++) {
+        if (this.livemap[x + this.width * j]) {
+            range[1] = j - 1;
+            break;
+        }
+    }
+
+    return range;
+};
+
 Board.prototype.findPaths = function (p, q) {
     var paths = [];
 
-    if (Math.abs(this.orderset[q] - this.orderset[p]) == this.size) {
+    if (Math.abs(this.tilemap[q] - this.tilemap[p]) == this.size) {
         var px = p % this.width;
         var py = Math.floor(p / this.width);
         var qx = q % this.width;
@@ -174,7 +170,7 @@ Board.prototype.findPaths = function (p, q) {
 
         for (var i = domain[0]; i <= domain[1]; i++) {
             for (var j = Math.min(py, qy) + 1; j < Math.max(py, qy); j++) {
-                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.activeset[i + this.width * j]) {
+                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.livemap[i + this.width * j]) {
                     break;
                 }
             }
@@ -185,7 +181,7 @@ Board.prototype.findPaths = function (p, q) {
 
         for (var j = range[0]; j <= range[1]; j++) {
             for (var i = Math.min(px, qx) + 1; i < Math.max(px, qx); i++) {
-                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.activeset[i + this.width * j]) {
+                if (i >= 0 && i < this.width && j >= 0 && j < this.height && this.livemap[i + this.width * j]) {
                     break;
                 }
             }
@@ -199,13 +195,12 @@ Board.prototype.findPaths = function (p, q) {
 };
 
 Board.prototype.select = function (i, j) {
-    var p = this.orderset.indexOf(i);
-    var q = this.orderset.indexOf(j);
+    var p = this.tilemap.indexOf(i);
+    var q = this.tilemap.indexOf(j);
     var paths = this.findPaths(p, q);
-    var r = Math.floor(Math.random() * paths.length);
     if (paths.length > 0) {
-        this.activeset[p] = false;
-        this.activeset[q] = false;
+        this.livemap[p] = false;
+        this.livemap[q] = false;
     }
-    return paths[r];
+    return paths[Math.floor(Math.random() * paths.length)];
 };

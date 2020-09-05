@@ -121,12 +121,12 @@ function selectTile (i) {
         i0 = i;
     }
     else {
-        var p = this.orderset.indexOf(i0);
-        var q = this.orderset.indexOf(i);
+        var p = this.tilemap.indexOf(i0);
+        var q = this.tilemap.indexOf(i);
         var paths = this.findPaths(p, q);
         if (paths.length > 0) {
-            this.activeset[p] = false;
-            this.activeset[q] = false;
+            this.livemap[p] = false;
+            this.livemap[q] = false;
             this.tileset[i0].classList.add("matched");
             this.tileset[i].classList.add("matched");
             matches++;
@@ -221,8 +221,8 @@ function shuffleTiles() {
 
     board.innerHTML = "";
     currentBoard.shuffle();
-    for (var i = 0; i < currentBoard.orderset.length; i++) {
-        board.appendChild(currentBoard.tileset[currentBoard.orderset[i]]);
+    for (var i = 0; i < currentBoard.tilemap.length; i++) {
+        board.appendChild(currentBoard.tileset[currentBoard.tilemap[i]]);
     }
 }
 
