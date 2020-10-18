@@ -241,7 +241,14 @@ function startGame() {
         height: ${80/currentBoard.height}vmin;
         max-width: ${80/currentBoard.width}vmax;
         max-height: ${80/currentBoard.width}vmax;
-    }`;
+    }
+    #pathmap polyline:first-child {
+        stroke-width: ${4/currentBoard.height}vmin;
+    }
+    #pathmap polyline:last-child {
+        stroke-width: ${3/currentBoard.height}vmin;
+    }
+    `;
     game.classList.remove("idle");
     countdown.classList.remove("hidden");
     for (var i = 0; i < 4; i++) {
