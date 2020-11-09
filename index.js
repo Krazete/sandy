@@ -199,7 +199,8 @@ function resetTiles() {
     for (var i = 0; i < currentBoard.tileset.length; i++) {
         currentBoard.tileset[i].classList.remove("selected");
         currentBoard.tileset[i].classList.remove("matched");
-        currentBoard.tileset[i].classList.remove("hidden");
+        // currentBoard.tileset[i].classList.remove("hidden");
+        currentBoard.tileset[i].classList.remove("invisible");
     }
 
     currentBoard.reset();
@@ -223,6 +224,9 @@ function shuffleTiles() {
     currentBoard.shuffle();
     for (var i = 0; i < currentBoard.tilemap.length; i++) {
         board.appendChild(currentBoard.tileset[currentBoard.tilemap[i]]);
+        if (!currentBoard.livemap[i]) {
+            currentBoard.tileset[currentBoard.tilemap[i]].classList.add("invisible");
+        }
     }
 }
 
@@ -324,6 +328,10 @@ function preloadImages() {
     }
 }
 
+function voivoi(e) {
+    e.preventDefault();
+}
+
 function init() {
     dynamicStyle = document.getElementById("dynamic-style");
 
@@ -352,12 +360,13 @@ function init() {
     preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
-    shuffle.addEventListener("click", shuffleTiles);
-    board.addEventListener("click", selectTile);
-    modechanger.addEventListener("click", changeMode);
-    start.addEventListener("click", startGame);
-    modechanger2.addEventListener("click", changeMode);
-    again.addEventListener("click", startGame);
+    shuffle.addEventListener("mousedown", shuffleTiles);
+    board.addEventListener("mousedown", selectTile);
+    modechanger.addEventListener("mousedown", changeMode);
+    start.addEventListener("mousedown", startGame);
+    modechanger2.addEventListener("mousedown", changeMode);
+    again.addEventListener("mousedown", startGame);
+    window.addEventListener("touchstart", voivoi);
 }
 
 window.addEventListener("DOMContentLoaded", init);
