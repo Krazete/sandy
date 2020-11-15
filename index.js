@@ -330,6 +330,24 @@ function preloadImages() {
 
 function voivoi(e) {
     e.preventDefault();
+    for (var touch of e.touches) {
+        relegator(touch);
+    }
+}
+
+function relegator(e) {
+    if (e.target == modechanger || e.target == modechanger2) {
+        changeMode();
+    }
+    else if (e.target == start || e.target == again) {
+        startGame();
+    }
+    else if (e.target == shuffle) {
+        shuffleTiles();
+    }
+    else if ("i" in e.target.dataset) {
+        selectTile(e);
+    }
 }
 
 function init() {
@@ -360,13 +378,8 @@ function init() {
     preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
-    shuffle.addEventListener("mousedown", shuffleTiles);
-    board.addEventListener("mousedown", selectTile);
-    modechanger.addEventListener("mousedown", changeMode);
-    start.addEventListener("mousedown", startGame);
-    modechanger2.addEventListener("mousedown", changeMode);
-    again.addEventListener("mousedown", startGame);
-    window.addEventListener("touchstart", voivoi);
+    window.addEventListener("mousedown", relegator);
+    window.addEventListener("toouchstart", voivoi);
 }
 
 window.addEventListener("DOMContentLoaded", init);
