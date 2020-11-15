@@ -379,7 +379,7 @@ function init() {
     currentBoard = new Board(modes[0].key, modes[0].size);
 
     window.addEventListener("mousedown", relegator);
-    window.addEventListener("toouchstart", voivoi);
+    window.addEventListener("touchstart", voivoi);
 }
 
 window.addEventListener("DOMContentLoaded", init);
