@@ -138,11 +138,11 @@ function selectTile (i) {
 };
 
 function selectTile(e) {
-    if (!("i" in e.target.dataset)) {
+    if (!("i" in e.dataset)) {
         return;
     }
 
-    var i = parseInt(e.target.dataset.i);
+    var i = parseInt(e.dataset.i);
 
     if (typeof i0 == "undefined") {
         currentBoard.tileset[i].classList.add("selected");
@@ -336,17 +336,23 @@ function voivoi(e) {
 }
 
 function relegator(e) {
-    if (e.target == modechanger || e.target == modechanger2) {
+    if ("target" in e) {
+        relegator(e.target);
+    }
+    else if (e == modechanger || e == modechanger2) {
         changeMode();
     }
-    else if (e.target == start || e.target == again) {
+    else if (e == start || e == again) {
         startGame();
     }
-    else if (e.target == shuffle) {
+    else if (e == shuffle) {
         shuffleTiles();
     }
-    else if ("i" in e.target.dataset) {
+    else if ("dataset" in e && "i" in e.dataset) {
         selectTile(e);
+    }
+    else if (e != document.body) {
+        relegator(e.parentElement);
     }
 }
 
@@ -379,7 +385,7 @@ function init() {
     currentBoard = new Board(modes[0].key, modes[0].size);
 
     window.addEventListener("mousedown", relegator);
-    window.addEventListener("touchstart", voivoi);
+    // window.addEventListener("touchstart", voivoi);
 }
 
 window.addEventListener("DOMContentLoaded", init);
