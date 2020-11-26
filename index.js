@@ -330,13 +330,13 @@ function preloadImages() {
 
 function voivoi(e) {
     e.preventDefault();
-    for (var touch of e.touches) {
-        relegator(touch);
-    }
 }
 
 function relegator(e) {
-    if ("target" in e) {
+    if ("touches" in e) {
+        relegator(e.touches[e.touches.length - 1]);
+    }
+    else if ("target" in e) {
         relegator(e.target);
     }
     else if (e == modechanger || e == modechanger2) {
@@ -384,8 +384,10 @@ function init() {
     preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
-    window.addEventListener("mousedown", relegator);
-    // window.addEventListener("touchstart", voivoi);
+    // window.addEventListener("mousedown", relegator);
+    window.addEventListener("touchstart", relegator);
+    // window.addEventListener("touchmove", voivoi);
+    // window.addEventListener("touchend", voivoi);
 }
 
 window.addEventListener("DOMContentLoaded", init);
