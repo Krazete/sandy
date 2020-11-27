@@ -334,6 +334,7 @@ function voivoi(e) {
 
 function relegator(e) {
     if ("touches" in e) {
+        e.preventDefault();
         relegator(e.touches[e.touches.length - 1]);
     }
     else if ("target" in e) {
@@ -384,10 +385,8 @@ function init() {
     preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
-    // window.addEventListener("mousedown", relegator);
-    window.addEventListener("touchstart", relegator);
-    // window.addEventListener("touchmove", voivoi);
-    // window.addEventListener("touchend", voivoi);
+    window.addEventListener("mousedown", relegator);
+    window.addEventListener("touchstart", relegator, {"passive": false});
 }
 
 window.addEventListener("DOMContentLoaded", init);
