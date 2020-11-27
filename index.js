@@ -83,8 +83,8 @@ function drawPath(path) {
     var box = board.getBoundingClientRect();
     if (box.width > box.height) {
         var size = box.width / currentBoard.width;
-        var x = box.left + size / 2;
-        var y = box.top + size / 2;
+        var x = scrollX + box.left + size / 2;
+        var y = scrollY + box.top + size / 2;
         for (var i = 0; i < 2; i++) {
             pathmap.children[i].setAttribute("points", [
                 (x + path[0][0] * size) + "," + (y + path[0][1] * size),
@@ -96,8 +96,8 @@ function drawPath(path) {
     }
     else {
         var size = box.height / currentBoard.width;
-        var x = box.right - size / 2;
-        var y = box.top + size / 2;
+        var x = scrollX + box.right - size / 2;
+        var y = scrollY + box.top + size / 2;
         for (var i = 0; i < 2; i++) {
             pathmap.children[i].setAttribute("points", [
                 (x - path[0][1] * size) + "," + (y + path[0][0] * size),
