@@ -9,6 +9,7 @@ body {
     background-size: cover;
     transform-style: preserve-3d;
     margin: 0;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -260,6 +261,8 @@ body {
 }
 
 #board div.matched {
+    -webkit-user-select: none;
+    user-select: none;
     animation: 300ms bloop forwards;
 }
 

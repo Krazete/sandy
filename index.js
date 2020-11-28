@@ -199,7 +199,6 @@ function resetTiles() {
     for (var i = 0; i < currentBoard.tileset.length; i++) {
         currentBoard.tileset[i].classList.remove("selected");
         currentBoard.tileset[i].classList.remove("matched");
-        // currentBoard.tileset[i].classList.remove("hidden");
         currentBoard.tileset[i].classList.remove("invisible");
     }
 
