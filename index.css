@@ -40,7 +40,6 @@ body {
     width: min-content;
     top: 50%;
     transform: translateY(-50%);
-    transform-style: preserve-3d;
     margin: auto;
 }
 
@@ -114,6 +113,7 @@ body {
 #game {
     background-image: url(img/bg.png);
     background-size: cover;
+    transform-style: preserve-3d;
 }
 
 #countdown {
@@ -161,6 +161,7 @@ body {
 /* Game */
 
 #game .container {
+    transform-style: preserve-3d;
     display: grid;
     grid-template:
         'a b c'
