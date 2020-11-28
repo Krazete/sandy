@@ -261,8 +261,7 @@ body {
 }
 
 #board div.matched {
-    -webkit-user-select: none;
-    user-select: none;
+    pointer-events: none;
     animation: 300ms bloop forwards;
 }
 
