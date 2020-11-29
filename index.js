@@ -242,8 +242,8 @@ function startGame() {
     #board > div {
         width: ${80/currentBoard.height}vmin;
         height: ${80/currentBoard.height}vmin;
-        max-width: ${70/currentBoard.width}vmax;
-        max-height: ${70/currentBoard.width}vmax;
+        max-width: ${80/currentBoard.width}vmax;
+        max-height: ${80/currentBoard.width}vmax;
     }
     #pathmap polyline:first-child {
         stroke-width: ${4/currentBoard.height}vmin;
