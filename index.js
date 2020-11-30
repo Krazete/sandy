@@ -2,8 +2,8 @@
 
 var dynamicStyle;
 var game, record, time, shuffle, board, pathmap, countdown;
-var banner, start;
-var result, newrecord, victory, time2, earned, again;
+var banner, mascot, modechanger, rules, start;
+var result, mascot2, modechanger2, newrecord, victory, time2, earned, again;
 
 /* Data */
 
@@ -329,8 +329,11 @@ function preloadImages() {
 
 function relegator(e) {
     if ("touches" in e) {
-        e.preventDefault();
-        relegator(e.touches[e.touches.length - 1]);
+        var touch = e.touches[e.touches.length - 1];
+        if (touch.target != rules) {
+            e.preventDefault();
+        }
+        relegator(touch);
     }
     else if ("target" in e) {
         relegator(e.target);
@@ -366,6 +369,7 @@ function init() {
     banner = document.getElementById("banner");
     mascot = document.getElementById("mascot");
     modechanger = document.getElementById("modechanger");
+    rules = document.getElementById("rules");
     start = document.getElementById("start");
 
     result = document.getElementById("result");
