@@ -1,6 +1,5 @@
 {
 	"name": "Sparkling Battle Star",
-	"short_name": "Battle Star",
 	"description": "A clone of San Diego's retrofit event minigame from Azur Lane.",
 	"start_url": "/",
 	"scope": "/",
