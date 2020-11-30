@@ -1,6 +1,6 @@
 {
-	"name": "Sparkling Battle Star!",
-	"short_name": "Sandy Retrofit",
+	"name": "Sparkling Battle Star",
+	"short_name": "Battle Star",
 	"description": "A clone of San Diego's retrofit event minigame from Azur Lane.",
 	"start_url": "/",
 	"scope": "/",
@@ -10,8 +10,13 @@
 	"orientation": "any",
 	"icons": [
 		{
-			"src": "img/mic.png",
+			"src": "img/star.png",
 			"sizes": "128x128",
+			"type": "image/png"
+		},
+		{
+			"src": "img/star_big.png",
+			"sizes": "512x512",
 			"type": "image/png"
 		}
 	]
