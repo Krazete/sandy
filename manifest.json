@@ -1,0 +1,18 @@
+{
+	"name": "Sparkling Battle Star!",
+	"short_name": "Sandy Retrofit",
+	"description": "A clone of San Diego's retrofit event minigame from Azur Lane.",
+	"start_url": "/",
+	"scope": "/",
+	"theme_color": "#5b5973",
+	"background_color": "#5b5973",
+	"display": "standalone",
+	"orientation": "any",
+	"icons": [
+		{
+			"src": "img/mic.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		}
+	]
+}

@@ -73,8 +73,8 @@ body {
     transition: .1s all;
 }
 #mascot2 {
-    -webkit-filter: drop-shadow(-2vmin 2vmin 0px #0003);
-    filter: drop-shadow(-2vmin 2vmin 0px #0003);
+    -webkit-filter: drop-shadow(-2vmin 2vmin 0px #00000040);
+    filter: drop-shadow(-2vmin 2vmin 0px #00000040);
 }
 
 .modechanger {
