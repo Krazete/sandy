@@ -197,6 +197,7 @@ function shuffleTiles() {
 
 function resizeTiles() {
     console.log(innerWidth);
+    var vmin = Math.min(innerWidth, innerHeight) / 100;
     var vmax = Math.max(innerWidth, innerHeight) / 100;
     dynamicStyle.innerHTML = `
     #board {
@@ -208,8 +209,8 @@ function resizeTiles() {
         }
     }
     #board > div {
-        width: ${80 / currentBoard.height}vmin;
-        height: ${80 / currentBoard.height}vmin;
+        width: ${80 / currentBoard.height * vmin}px;
+        height: ${80 / currentBoard.height * vmin}px;
         max-width: ${80 / currentBoard.width * vmax}px;
         max-height: ${80 / currentBoard.width * vmax}px;
     }
