@@ -29,5 +29,19 @@ var modes = [
             "left": "-26%",
             "top": "-9%"
         }
+    },
+    {
+        "key": "meow",
+        "size": 14,
+        "banner": {
+            "width": "65%",
+            "left": "-20%",
+            "top": "-10%"
+        },
+        "result": {
+            "width": "55%",
+            "left": "0",
+            "top": "0"
+        }
     }
 ];
