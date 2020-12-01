@@ -196,7 +196,6 @@ function shuffleTiles() {
 }
 
 function resizeTiles() {
-    console.log(innerWidth);
     var vmin = Math.min(innerWidth, innerHeight) / 100;
     var vmax = Math.max(innerWidth, innerHeight) / 100;
     dynamicStyle.innerHTML = `
