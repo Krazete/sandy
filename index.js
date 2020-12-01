@@ -284,7 +284,7 @@ function endGame() {
 
     timer.current = timer.end - timer.start;
     if (timer.current < timer.record || timer.record <= 0) {
-        localStorage.setItem(timer.key, timer.current);
+        localStorage.setItem(timer.key, Math.floor(timer.current / 10) * 10);
         timer.record = timer.current;
         newRecordFlag = true;
     }
