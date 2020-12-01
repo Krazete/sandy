@@ -7,7 +7,7 @@ var result, mascot2, modechanger2, newrecord, victory, time2, earned, again;
 
 /* Data */
 
-var currentBoard;
+var currentBoard, i0;
 var mode = -1;
 var matches = 0;
 
@@ -54,21 +54,6 @@ function stopTimer() {
     cancelAnimationFrame(timer.id);
 }
 
-/* Initialize Board */
-
-function updateBoard() {
-    for (var i = 0; i < 36; i++) {
-        var tile = tiles[ids[i]];
-        board.appendChild(tile);
-        if (empty[i]) {
-            tile.classList.add("invisible");
-        }
-        else {
-            tile.classList.remove("invisible");
-        }
-    }
-}
-
 /* Draw Path */
 
 function showPath() {
@@ -112,8 +97,6 @@ function drawPath(path) {
 }
 
 /* Game Logic */
-
-var i0;
 
 function selectTile(e) {
     if (!("i" in e.dataset)) {
