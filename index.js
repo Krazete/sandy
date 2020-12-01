@@ -195,7 +195,9 @@ function shuffleTiles() {
     }
 }
 
-function startGame() {
+function resizeTiles() {
+    console.log(innerWidth);
+    var vmax = Math.max(innerWidth, innerHeight) / 100;
     dynamicStyle.innerHTML = `
     #board {
         grid-template-columns: repeat(${currentBoard.width}, auto);
@@ -206,18 +208,21 @@ function startGame() {
         }
     }
     #board > div {
-        width: ${80/currentBoard.height}vmin;
-        height: ${80/currentBoard.height}vmin;
-        max-width: ${80/currentBoard.width}vmax;
-        max-height: ${80/currentBoard.width}vmax;
+        width: ${80 / currentBoard.height}vmin;
+        height: ${80 / currentBoard.height}vmin;
+        max-width: ${80 / currentBoard.width * vmax}px;
+        max-height: ${80 / currentBoard.width * vmax}px;
     }
     #pathmap polyline:first-child {
-        stroke-width: ${4/currentBoard.height}vmin;
+        stroke-width: ${4 / currentBoard.height}vmin;
     }
     #pathmap polyline:last-child {
-        stroke-width: ${3/currentBoard.height}vmin;
+        stroke-width: ${3 / currentBoard.height}vmin;
     }
     `;
+}
+
+function startGame() {
     game.classList.remove("idle");
     countdown.classList.remove("hidden");
     for (var i = 0; i < 4; i++) {
@@ -231,6 +236,7 @@ function startGame() {
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
+    resizeTiles();
     resetTiles();
     shuffleTiles();
     setTimeout(startGameplay, 4000);
@@ -351,6 +357,15 @@ function init() {
     preloadImages();
     currentBoard = new Board(modes[0].key, modes[0].size);
 
+    var resizeTilesDebounced = (function () {
+        var timeout;
+        return function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(resizeTiles, 250);
+        };
+    })();
+
+    window.addEventListener("resize", resizeTilesDebounced);
     window.addEventListener("mousedown", relegator);
     window.addEventListener("touchstart", relegator, {"passive": false});
 }
