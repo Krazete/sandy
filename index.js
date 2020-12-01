@@ -115,28 +115,6 @@ function drawPath(path) {
 
 var i0;
 
-function selectTile (i) {
-    this.tileset[i].classList.add("selected");
-    if (typeof i0 == "undefined") {
-        i0 = i;
-    }
-    else {
-        var p = this.tilemap.indexOf(i0);
-        var q = this.tilemap.indexOf(i);
-        var paths = this.findPaths(p, q);
-        if (paths.length > 0) {
-            this.livemap[p] = false;
-            this.livemap[q] = false;
-            this.tileset[i0].classList.add("matched");
-            this.tileset[i].classList.add("matched");
-            matches++;
-            return paths;
-        }
-        i0 = undefined;
-    }
-    return false;
-};
-
 function selectTile(e) {
     if (!("i" in e.dataset)) {
         return;
@@ -218,6 +196,11 @@ function enableShuffle() {
 function shuffleTiles() {
     disableShuffle();
     setTimeout(enableShuffle, 4000);
+
+    if (typeof i0 != "undefined") {
+        currentBoard.tileset[i0].classList.remove("selected");
+        i0 = undefined;
+    }
 
     board.innerHTML = "";
     currentBoard.shuffle();
