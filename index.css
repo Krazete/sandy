@@ -178,6 +178,7 @@ body {
 }
 
 #recordtime {
+    height: 10vmin;
     grid-area: b;
 }
 
