@@ -7,7 +7,7 @@ var result, mascot2, modechanger2, newrecord, victory, time2, earned, again;
 
 /* Data */
 
-var currentBoard, i0;
+var currentBoard, i0, newRecordFlag;
 var mode = -1;
 var matches = 0;
 
@@ -236,6 +236,8 @@ function startGame() {
     record.innerHTML = formatTime(timer.record);
     time.innerHTML = formatTime(0);
 
+    newRecordFlag = false;
+
     resizeTiles();
     resetTiles();
     shuffleTiles();
@@ -255,7 +257,7 @@ function startGameplay() {
 
 function updateResults() {
     if (currentBoard.key == timer.key) {
-        if (timer.current == timer.record) {
+        if (newRecordFlag) {
             newrecord.classList.remove("hidden");
             victory.classList.add("hidden");
         }
@@ -284,6 +286,7 @@ function endGame() {
     if (timer.current < timer.record || timer.record <= 0) {
         localStorage.setItem(timer.key, timer.current);
         timer.record = timer.current;
+        newRecordFlag = true;
     }
     updateResults();
 }
