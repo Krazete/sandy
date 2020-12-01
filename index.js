@@ -294,12 +294,13 @@ function endGame() {
 /* Initialize */
 
 function preloadImages() {
-    var img = new Image();
     for (var mode of modes) {
         for (var i = 0; i <= mode.size; i++) {
+            var img = new Image();
             img.src = mode.key + "/" + i + ".png";
         }
     }
+    var img = new Image();
     img.src = "img/selected.png";
 }
 
