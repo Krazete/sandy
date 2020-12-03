@@ -47,4 +47,5 @@ To install, find the "Add to Homescreen" option in your device's browser.
   - This bug is fixable, but the rules text would become unscrollable on all devices as a result of the fix.
 - Banner sprites may load slowly between mode changes.
 - The "earned" number on the results screen is the additional milliseconds of your score time (another digit of accuracy).
-  - All new record times are rounded down so milliseconds don't make a difference.
+  - I added this behavior since it's not possible to earn Battle Stars, and showing 0 every time is boring.
+  - All score times are rounded down during calculation so these milliseconds won't make a difference when considering new records.
