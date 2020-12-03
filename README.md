@@ -6,24 +6,13 @@ A clone of San Diego's retrofit event minigame from Azur Lane.
 
 Most assets were taken from the [Azur Lane Wiki](https://azurlane.koumakan.jp/Azur_Lane_Wiki).
 
-## Progressive Web App (PWA)
-
-This website is installable on iOS and Android as a standalone app.
-
-To install, find the "Add to Homescreen" option in your device's browser.
-
-Installing this PWA will:
-
-- Make it available offline.
-- Make it look a lot better with the address bar out of the way.
-
 ## Modes
 
 I added two custom variations (VTuber and Meowfficer) of the game to this project.
 
 To change modes, tap the banner sprite on the starting screen or results screen.
 
-## Create Your Own Mode
+### Create Your Own Mode
 
 To add a new mode:
 
@@ -38,6 +27,17 @@ To add a new mode:
   - `banner` is the CSS rules of `0.png` on the starting screen.
   - `result` is the CSS rules of `0.png` on the results screen.
 - Enable GitHub Pages for your forked repo and enjoy.
+
+## Progressive Web App (PWA)
+
+This website is installable on iOS and Android as a standalone app.
+
+To install, find the "Add to Homescreen" option in your device's browser.
+
+Installing this PWA will:
+
+- Make it available offline.
+- Make it look a lot better with the address bar out of the way.
 
 ## Known Bugs
 
