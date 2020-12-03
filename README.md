@@ -6,13 +6,16 @@ A clone of San Diego's retrofit event minigame from Azur Lane.
 
 Most assets were taken from the [Azur Lane Wiki](https://azurlane.koumakan.jp/Azur_Lane_Wiki).
 
-## PWA
+## Progressive Web App (PWA)
 
 This website is installable on iOS and Android as a standalone app.
 
 To install, find the "Add to Homescreen" option in your device's browser.
 
-It looks a lot better without the address bar in the way.
+Installing this PWA will:
+
+- Make it available offline.
+- Make it look a lot better with the address bar out of the way.
 
 ## Modes
 
