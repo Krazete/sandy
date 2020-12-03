@@ -39,10 +39,12 @@ Installing this PWA will:
 
 To install, find the "Add to Homescreen" option in your device's browser.
 
-## Known Bugs
+## Bugs and Quirks
 
-- Banner sprites may load slowly between mode changes.
 - On iOS, it's possible to get stuck with a zoomed-in screen.
   - To fix this, just double-tap the rules text again.
   - If you started a game, reload the website to see the rules text.
   - This bug is fixable, but the rules text would become unscrollable on all devices as a result of the fix.
+- Banner sprites may load slowly between mode changes.
+- The "earned" number on the results screen is the additional milliseconds of your score time (another digit of accuracy).
+  - All new record times are rounded down so milliseconds don't make a difference.
