@@ -8,7 +8,7 @@ Most assets were taken from the [Azur Lane Wiki](https://azurlane.koumakan.jp/Az
 
 ## Modes
 
-I added two custom variations (VTuber and Meowfficer) of the game to this project.
+Two custom variations (VTuber and Meowfficer) have been added to this project.
 
 To change modes, tap the banner sprite on the starting screen or results screen.
 
@@ -32,12 +32,12 @@ To add a new mode:
 
 This website is installable on iOS and Android as a standalone app.
 
-To install, find the "Add to Homescreen" option in your device's browser.
-
 Installing this PWA will:
 
 - Make it available offline.
 - Make it look a lot better with the address bar out of the way.
+
+To install, find the "Add to Homescreen" option in your device's browser.
 
 ## Known Bugs
 
@@ -45,4 +45,4 @@ Installing this PWA will:
 - On iOS, it's possible to get stuck with a zoomed-in screen.
   - To fix this, just double-tap the rules text again.
   - If you started a game, reload the website to see the rules text.
-  - I could fix this bug, but then the rules text would become unscrollable.
+  - This bug is fixable, but the rules text would become unscrollable on all devices as a result of the fix.
