@@ -32,7 +32,7 @@ var modes = [
     },
     {
         "key": "meow",
-        "size": 14,
+        "size": 16,
         "banner": {
             "width": "65%",
             "left": "-20%",
